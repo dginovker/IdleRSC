@@ -2,14 +2,11 @@ package scripting.idlescript.other;
 
 import bot.Main;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.util.*;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
 import scripting.idlescript.IdleScript;
 
 public class AIOAIO extends IdleScript {
@@ -53,13 +50,21 @@ public class AIOAIO extends IdleScript {
     botConfig.skills.forEach(skillListModel::addElement);
     skillList = new JList<>(skillListModel);
     skillList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    skillList.addListSelectionListener(this::skillSelected);
+    skillList.addListSelectionListener(
+        e -> {
+          if (!e.getValueIsAdjusting()) {
+            updateMethodsPanel();
+          }
+        });
     methodsPanel = new JPanel();
     methodsPanel.setLayout(new BoxLayout(methodsPanel, BoxLayout.Y_AXIS));
-    enableDisableSkillButton = new JButton("Enable/Disable Skill");
-    enableDisableSkillButton.addActionListener(this::toggleSkillEnabled);
     startButton = new JButton("Start");
-    startButton.addActionListener(this::startButtonClicked);
+    startButton.addActionListener(
+        e -> {
+          scriptFrame.dispose();
+          guiDone = true;
+          System.out.println("Bot starting with the current configuration...");
+        });
     JPanel skillsPanel = createSectionWithTitle("Skills", new JScrollPane(skillList));
     Dimension preferredSize = new Dimension(200, 100);
     methodsPanel.setPreferredSize(preferredSize);
@@ -81,71 +86,41 @@ public class AIOAIO extends IdleScript {
     return sectionPanel;
   }
 
-  private void skillSelected(ListSelectionEvent e) {
-    if (!e.getValueIsAdjusting()) {
-      updateMethodsPanel();
-    }
-  }
-
-  private void toggleSkillEnabled(ActionEvent e) {
-    Skill selectedSkill = skillList.getSelectedValue();
-    if (selectedSkill != null) {
-      selectedSkill.setEnabled(!selectedSkill.isEnabled());
-      skillListModel.setElementAt(selectedSkill, skillList.getSelectedIndex());
-      updateMethodsPanel();
-    }
-  }
-
   private void updateMethodsPanel() {
     methodsPanel.removeAll();
     Skill selectedSkill = skillList.getSelectedValue();
-    if (selectedSkill != null) {
-      for (Method method : selectedSkill.getMethods()) {
-        JCheckBox checkBox = new JCheckBox(method.getName(), method.isEnabled());
-        checkBox.addActionListener(e -> method.setEnabled(checkBox.isSelected()));
-        methodsPanel.add(checkBox);
-      }
+    if (selectedSkill == null) return;
+
+    for (Method method : selectedSkill.getMethods()) {
+      JCheckBox checkBox = new JCheckBox(method.getName(), method.isEnabled());
+      checkBox.addActionListener(
+          e -> {
+            method.setEnabled(checkBox.isSelected());
+            // No need to update the entire list model for a single change
+          });
+      methodsPanel.add(checkBox);
     }
+
+    enableDisableSkillButton = new JButton(selectedSkill.isEnabled() ? "Disable" : "Enable");
+    enableDisableSkillButton.addActionListener(
+        e -> {
+          if (selectedSkill != null) {
+            selectedSkill.setEnabled(!selectedSkill.isEnabled());
+            skillListModel.setElementAt(selectedSkill, skillList.getSelectedIndex());
+            updateMethodsPanel();
+          }
+        });
+    methodsPanel.add(enableDisableSkillButton);
     methodsPanel.revalidate();
     methodsPanel.repaint();
-  }
-
-  private void startButtonClicked(ActionEvent e) {
-    // Example of finalizing botConfig based on GUI selections. This step might
-    // involve:
-    // 1. Updating botConfig with the selected skills and methods.
-    // 2. Any other pre-start configurations.
-
-    // Since your structure doesn't directly link skills in botConfig with GUI, you
-    // might need to:
-    // - Iterate over skills and methods in GUI.
-    // - Update the corresponding objects in botConfig accordingly.
-
-    // This is a placeholder for how you might begin such a process. You'll need to
-    // tailor it to your actual data structures.
-    for (int i = 0; i < skillListModel.size(); i++) {
-      Skill skill = skillListModel.getElementAt(i);
-      // Assuming botConfig.skillMap should be populated or updated based on GUI.
-      botConfig.skillMap.put(
-          skill.getName(), skill); // Ensure skillMap is being used correctly in your logic.
-    }
-
-    // Assuming there's logic here to ensure botConfig accurately reflects the state
-    // of the GUI selections.
-
-    scriptFrame.dispose(); // Close the GUI window.
-    guiDone = true; // Mark the GUI setup as complete to allow the bot loop to start.
-
-    // Optionally, log or print a message indicating the bot is starting.
-    System.out.println("Bot starting with the current configuration...");
   }
 
   class Skill {
     private String name;
     private boolean enabled;
-    private Method[] methods;
+    private List<Method> methods;
 
-    public Skill(String name, boolean enabled, Method[] methods) {
+    public Skill(String name, boolean enabled, List<Method> methods) {
       this.name = name;
       this.enabled = enabled;
       this.methods = methods;
@@ -163,13 +138,17 @@ public class AIOAIO extends IdleScript {
       this.enabled = enabled;
     }
 
-    public Method[] getMethods() {
+    public List<Method> getMethods() {
       return methods;
+    }
+
+    public void setMethods(List<Method> methods) {
+      this.methods = methods;
     }
 
     public Method getRandomEnabledMethod() {
       List<Method> enabledMethods =
-          Arrays.stream(methods).filter(Method::isEnabled).collect(Collectors.toList());
+          methods.stream().filter(Method::isEnabled).collect(Collectors.toList());
       if (enabledMethods.isEmpty()) {
         return null;
       }
@@ -214,8 +193,6 @@ public class AIOAIO extends IdleScript {
   }
 
   class AIOAIOConfig {
-    private final Map<String, Skill> skillMap = new HashMap<>();
-
     public List<Skill> skills = new ArrayList<>();
 
     public AIOAIOConfig() {
@@ -223,18 +200,21 @@ public class AIOAIO extends IdleScript {
           new Skill(
               "Woodcutting",
               true,
-              new Method[] {
-                new Method("normal", true, this::dummyAction),
-                new Method("oak", true, this::dummyAction),
-                new Method("willow", true, this::dummyAction)
-              }));
+              Arrays.asList(
+                  new Method("normal", true, this::dummyAction),
+                  new Method("oak", true, this::dummyAction),
+                  new Method("willow", true, this::dummyAction))));
       skills.add(
-          new Skill("Fishing", true, new Method[] {new Method("Shrimp", true, this::dummyAction)}));
+          new Skill(
+              "Fishing",
+              true,
+              Collections.singletonList(new Method("Shrimp", true, this::dummyAction))));
       skills.add(
           new Skill(
               "Agility",
               true,
-              new Method[] {new Method("Tree Gnome Village", true, this::dummyAction)}));
+              Collections.singletonList(
+                  new Method("Tree Gnome Village", true, this::dummyAction))));
     }
 
     private void dummyAction() {
@@ -243,39 +223,12 @@ public class AIOAIO extends IdleScript {
 
     public Skill getRandomEnabledSkill() {
       List<Skill> enabledSkills =
-          skillMap.values().stream().filter(Skill::isEnabled).collect(Collectors.toList());
+          skills.stream().filter(Skill::isEnabled).collect(Collectors.toList());
+      if (enabledSkills.isEmpty()) {
+        return null;
+      }
       int index = ThreadLocalRandom.current().nextInt(enabledSkills.size());
       return enabledSkills.get(index);
-    }
-
-    public void toggleSkillEnabled(String skillName) {
-      Skill skill = skillMap.get(skillName);
-      if (skill != null) {
-        skill.setEnabled(!skill.isEnabled());
-      }
-    }
-
-    public boolean isSkillEnabled(String skillName) {
-      Skill skill = skillMap.get(skillName);
-      return skill != null && skill.isEnabled();
-    }
-
-    public void toggleMethodEnabled(Skill skill, String methodName, boolean enabled) {
-      for (Method method : skill.getMethods()) {
-        if (method.getName().equals(methodName)) {
-          method.setEnabled(enabled);
-          break;
-        }
-      }
-    }
-
-    public boolean isMethodEnabled(Skill skill, String methodName) {
-      for (Method method : skill.getMethods()) {
-        if (method.getName().equals(methodName)) {
-          return method.isEnabled();
-        }
-      }
-      return false;
     }
   }
 
