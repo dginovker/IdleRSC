@@ -5,8 +5,8 @@ import javax.swing.*;
 
 public class AIOAIO_GUI {
   static JFrame scriptFrame = null;
-  static JList<AIOAIOSkill> skillList;
-  static DefaultListModel<AIOAIOSkill> skillListModel;
+  static JList<AIOAIO_Skill> skillList;
+  static DefaultListModel<AIOAIO_Skill> skillListModel;
   static JPanel methodsPanel;
   static JButton startButton, enableDisableSkillButton;
 
@@ -14,7 +14,7 @@ public class AIOAIO_GUI {
     scriptFrame = new JFrame("Runescape Classic AIO Bot");
     scriptFrame.setLayout(new BorderLayout());
     skillListModel = new DefaultListModel<>();
-    AIOAIO.botConfig.skills.forEach(skillListModel::addElement);
+    AIOAIO.state.botConfig.skills.forEach(skillListModel::addElement);
     skillList = new JList<>(skillListModel);
     skillList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     skillList.addListSelectionListener(
@@ -29,7 +29,7 @@ public class AIOAIO_GUI {
     startButton.addActionListener(
         e -> {
           scriptFrame.dispose();
-          AIOAIO.guiDone = true;
+          AIOAIO.state.startPressed = true;
           System.out.println("Bot starting with the current configuration...");
         });
     JPanel skillsPanel = createSectionWithTitle("Skills", new JScrollPane(skillList));
@@ -55,7 +55,7 @@ public class AIOAIO_GUI {
 
   static void updateMethodsPanel() {
     methodsPanel.removeAll();
-    AIOAIOSkill selectedSkill = skillList.getSelectedValue();
+    AIOAIO_Skill selectedSkill = skillList.getSelectedValue();
     if (selectedSkill == null) return;
 
     for (AIOAIO_Method method : selectedSkill.getMethods()) {

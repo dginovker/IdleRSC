@@ -4,46 +4,53 @@ import bot.Main;
 import scripting.idlescript.IdleScript;
 
 public class AIOAIO extends IdleScript {
-  static AIOAIOConfig botConfig = new AIOAIOConfig();
-  static boolean guiSetup = false;
-  static boolean guiDone = false;
-  private AIOAIOSkill currentSkill;
-  private AIOAIO_Method currentMethod;
-  private long endTime = System.currentTimeMillis();
+  /**
+   * Welcome to AIO AIO!
+   * The goal of this script is to train your account in all aspects.
+   * 
+   * Feel free to expand it! The priorities are _reliability_ and
+   * _maintainability_. Individual training methods should be very robust and not
+   * affect anything out of their file (otherwise this AIO AIO script would get
+   * very messy with a million variables).
+   * 
+   * The goal of AIO AIO is to eventually have a "PKing" method that makes every
+   * bot using this script do PK events at certain times of the day!
+   * (It's also just fun to watch your account progress on its own, with no user
+   * input)
+   */
+
+  public static AIOAIO_State state = new AIOAIO_State();
 
   public int start(String[] parameters) {
-    if (!guiSetup) {
-      guiSetup = true;
+    if (!state.guiSetup) {
+      state.guiSetup = true;
       AIOAIO_GUI.setupGUI();
     }
-    if (guiDone) {
+    if (state.startPressed) {
       return loop();
     }
     return 50;
   }
 
   private int loop() {
-    if (System.currentTimeMillis() > endTime) {
-      currentSkill = botConfig.getRandomEnabledSkill();
-      currentMethod = currentSkill.getRandomEnabledMethod();
-      endTime = System.currentTimeMillis() + 6_000;
+    if (System.currentTimeMillis() > state.endTime) {
+      state.currentSkill = state.botConfig.getRandomEnabledSkill();
+      state.currentMethod = state.currentSkill.getRandomEnabledMethod();
+      state.endTime = System.currentTimeMillis() + 6_000;
     }
-    System.out.println("Looping!");
-    return 100;
+    return state.currentMethod.performAction();
   }
 
   @Override
   public void paintInterrupt() {
     Main.getController().drawString("@red@AIOAIO", 6, 21, 0xFFFFFF, 1);
-    String currentSkillText =
-        "Current Skill: " + (currentSkill != null ? currentSkill.getName() : "None");
-    String currentMethodText =
-        "Current Method: " + (currentMethod != null ? currentMethod.getName() : "None");
+    String currentSkillText = "Current Skill: " + (state.currentSkill != null ? state.currentSkill.getName() : "None");
+    String currentMethodText = "Current Method: "
+        + (state.currentMethod != null ? state.currentMethod.getName() : "None");
     Main.getController().drawString("@red@" + currentSkillText, 6, 35, 0xFFFFFF, 1);
     Main.getController().drawString("@red@" + currentMethodText, 6, 49, 0xFFFFFF, 1);
-    long timeRemaining = endTime - System.currentTimeMillis();
-    String timeRemainingText =
-        "Time remaining: " + (timeRemaining > 0 ? timeRemaining / 1000 + " seconds" : "None");
+    long timeRemaining = state.endTime - System.currentTimeMillis();
+    String timeRemainingText = "Time remaining: " + (timeRemaining > 0 ? timeRemaining / 1000 + " seconds" : "None");
     Main.getController().drawString("@red@" + timeRemainingText, 6, 63, 0xFFFFFF, 1);
   }
 }

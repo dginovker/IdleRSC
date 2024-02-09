@@ -1,11 +1,14 @@
 package scripting.idlescript.other.AIOAIO;
 
+import java.util.function.Supplier;
+
+
 class AIOAIO_Method {
   private String name;
-  private boolean enabled;
-  private Runnable action;
+  private boolean enabled; // Whether the user wants to run this Method or not
+  private Supplier<Integer> action; // The actual bot loop - Returns how long to sleep
 
-  public AIOAIO_Method(String name, boolean enabled, Runnable action) {
+  public AIOAIO_Method(String name, boolean enabled, Supplier<Integer> action) {
     this.name = name;
     this.enabled = enabled;
     this.action = action;
@@ -23,9 +26,7 @@ class AIOAIO_Method {
     this.enabled = enabled;
   }
 
-  public void performAction() {
-    if (action != null) {
-      action.run();
-    }
+  public int performAction() {
+    return action.get();
   }
 }

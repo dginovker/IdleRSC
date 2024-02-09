@@ -4,12 +4,12 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
-class AIOAIOSkill {
+class AIOAIO_Skill {
   private String name;
   private boolean enabled;
   private List<AIOAIO_Method> methods;
 
-  public AIOAIOSkill(String name, boolean enabled, List<AIOAIO_Method> methods) {
+  public AIOAIO_Skill(String name, boolean enabled, List<AIOAIO_Method> methods) {
     this.name = name;
     this.enabled = enabled;
     this.methods = methods;
