@@ -11,6 +11,7 @@ import com.openrsc.client.entityhandling.instances.Item;
 import com.openrsc.client.model.Sprite;
 import com.openrsc.interfaces.misc.AuctionHouse;
 import com.openrsc.interfaces.misc.ProgressBarInterface;
+import compatibility.apos.Script;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
@@ -47,6 +48,7 @@ import orsc.graphics.gui.SocialLists;
 import orsc.graphics.two.MudClientGraphics;
 import orsc.mudclient;
 import reflector.Reflector;
+import scripting.apos.PathWalker;
 
 /**
  * This is the native scripting API for IdleRSC.
@@ -603,6 +605,28 @@ public class Controller {
   }
 
   /**
+   * Smartly walk towards any location in the overworld (warning: spikes CPU and RAM)
+   *
+   * <p>It's inefficient because it recalculates the whole path each time I'm too lazy to make it
+   * better right now
+   *
+   * @param x
+   * @param y
+   */
+  public void walkTowards(int x, int y) {
+    if (currentX() == x && currentY() == y) return;
+    // Setup APOS compatibility because we're calling the APOS PathWalker..
+    Script.setController(this);
+    System.out.println("Walking to " + x + "," + y);
+    PathWalker pw = new PathWalker();
+    pw.init(null);
+    System.out.println("Calcing path");
+    PathWalker.Path path = pw.calcPath(x, y);
+    pw.setPath(path);
+    if (!pw.walkPath()) System.out.println("Done walk to " + x + "," + y);
+  }
+
+  /**
    * Whether or not the specified tile has an object at it.
    *
    * @param x int
@@ -651,16 +675,18 @@ public class Controller {
    * Retrieves the coordinates of the nearest specified object ID, if nearby and reachable.
    *
    * @param objectId The ID of the object to find.
+   * @param includeTileEdges -- whether or not the edges of the tile are permitted. Such as picking
+   *     up an item on a table -- you can't walk on top of the table, but you can reach the edges.
    * @return int[] The coordinates [x, y] of the nearest reachable object, or null if no such object
    *     is nearby and reachable.
    */
-  public int[] getNearestReachableObjectById(int objectId) {
+  public int[] getNearestReachableObjectById(int objectId, boolean includeTileEdges) {
     Main.logMethod("getNearestReachableObjectById", objectId);
     int[] closestCoords = null;
     int closestDistance = 99999;
 
     for (int[] objCoords : getObjectsById(objectId)) {
-      if (isReachable(objCoords[0], objCoords[1], false)) {
+      if (isReachable(objCoords[0], objCoords[1], includeTileEdges)) {
         int dist = distance(this.currentX(), this.currentY(), objCoords[0], objCoords[1]);
         if (dist < closestDistance) {
           closestDistance = dist;

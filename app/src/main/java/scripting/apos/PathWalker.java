@@ -346,6 +346,7 @@ public class PathWalker extends Script implements ActionListener, ItemListener {
     // If init is called with null, it is being called by another script,
     // so don't create the UI.
     if (params != null) {
+      System.out.println("Opening PathWalker GUI...");
       createFrame();
     }
   }

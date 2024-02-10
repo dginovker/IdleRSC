@@ -1,11 +1,8 @@
 package scripting.idlescript.other.AIOAIO.woodcutting;
 
 import bot.Main;
-import compatibility.apos.Script;
 import controller.Controller;
 import models.entities.SceneryId;
-import scripting.apos.PathWalker;
-import scripting.apos.PathWalker.Path;
 import scripting.idlescript.other.AIOAIO.AIOAIO;
 
 public class Woodcut {
@@ -18,7 +15,7 @@ public class Woodcut {
     if (!Woodcutting_Utils.hasAxeInInventory()) return getAxe();
     if (c.getInventoryItemCount() >= 30) return bankLogs();
     if (c.isBatching()) return 250; // Wait to finish chopping
-    if (c.getNearestReachableObjectById(getTreeId()) != null) return chopTree();
+    if (c.getNearestReachableObjectById(getTreeId(), true) != null) return chopTree();
     else return findTrees();
   }
 
@@ -34,28 +31,22 @@ public class Woodcut {
     throw new IllegalStateException("Unknown tree type: " + AIOAIO.state.currentMethod.getName());
   }
 
-  private static void badwalk(int x, int y) {
-    // This is inefficient because it reloads the whole walking map each time
-    // Setup APOS compatibility because we're calling the APOS PathWalker..
-    Script.setController(c);
-    System.out.println("Walking to " + x + "," + y);
-    PathWalker pw = new PathWalker();
-    pw.init(null);
-    System.out.println("Calcing path");
-    Path path = pw.calcPath(x, y);
-    pw.setPath(path);
-    if (!pw.walkPath()) System.out.println("AIOAIO done walk to " + x + "," + y);
-  }
-
   private static int findTrees() {
-    c.setStatus("Walking to Seers");
-    badwalk(500, 453);
-    return 50;
+    switch (AIOAIO.state.currentMethod.getName()) {
+      case "normal":
+      case "oak":
+        c.setStatus("Walking to Seers");
+        c.walkTowards(500, 453);
+      case "willow":
+        c.setStatus("Walking to Seers");
+        c.walkTowards(509, 442);
+    }
+    throw new IllegalStateException("Unknown tree type: " + AIOAIO.state.currentMethod.getName());
   }
 
   private static int chopTree() {
     c.setStatus("Chopping tree");
-    int[] treeCoords = c.getNearestReachableObjectById(getTreeId());
+    int[] treeCoords = c.getNearestReachableObjectById(getTreeId(), true);
     c.atObject(treeCoords[0], treeCoords[1]);
     return 1200;
   }
@@ -63,7 +54,7 @@ public class Woodcut {
   private static int bankLogs() {
     if (c.getNearestNpcById(95, false) == null) {
       c.setStatus("Walking to Bank");
-      badwalk(c.getNearestBank()[0], c.getNearestBank()[1]);
+      c.walkTowards(c.getNearestBank()[0], c.getNearestBank()[1]);
       return 50;
     }
     c.setStatus("Opening bank");
@@ -81,7 +72,7 @@ public class Woodcut {
   private static int getAxeFromBank() {
     if (c.getNearestNpcById(95, false) == null) {
       c.setStatus("Walking to Bank");
-      c.walkTo(c.getNearestBank()[0], c.getNearestBank()[1]);
+      c.walkTowards(c.getNearestBank()[0], c.getNearestBank()[1]);
     }
     c.setStatus("Opening bank");
     c.openBank();
@@ -116,7 +107,7 @@ public class Woodcut {
       return 1000;
     }
     c.setStatus("Walking to axe");
-    badwalk(308, 523);
+    c.walkTowards(308, 523);
     return 50;
   }
 }
