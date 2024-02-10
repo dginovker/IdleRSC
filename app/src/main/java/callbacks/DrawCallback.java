@@ -158,7 +158,7 @@ public class DrawCallback {
             1);
 
       y += 14;
-      long totalXp = getTotalXp();
+      long totalXp = c.getTotalXp();
       startingXp = Math.min(totalXp, startingXp);
       long xpGained = totalXp - startingXp;
       long xpPerHr;
@@ -218,22 +218,6 @@ public class DrawCallback {
         //            	}
       }
     }
-  }
-  /**
-   * Returns the total XP by summing up the player experience for each stat.
-   *
-   * @return the total XP as a long value
-   */
-  private static long getTotalXp() {
-    Controller c = Main.getController();
-
-    long result = 0;
-
-    for (int statIndex = 0; statIndex < c.getStatCount(); statIndex++) {
-      result += c.getPlayerExperience(statIndex); // c.getStatXp(statIndex);
-    }
-
-    return result;
   }
 
   /**

@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
+import scripting.idlescript.other.AIOAIO.agility.GnomeVillage;
 import scripting.idlescript.other.AIOAIO.fishing.Fish;
 import scripting.idlescript.other.AIOAIO.woodcutting.Woodcut;
 
@@ -22,14 +23,14 @@ class AIOAIOConfig {
     skills.add(
         new AIOAIO_Skill(
             "Fishing",
-            true,
+            false,
             Collections.singletonList(new AIOAIO_Method("Shrimp", true, Fish::run))));
     skills.add(
         new AIOAIO_Skill(
             "Agility",
-            false,
+            true,
             Collections.singletonList(
-                new AIOAIO_Method("Tree Gnome Village", true, this::dummyAction))));
+                new AIOAIO_Method("Tree Gnome Village", true, GnomeVillage::run))));
   }
 
   private int dummyAction() {

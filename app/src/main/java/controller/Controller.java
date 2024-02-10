@@ -126,6 +126,72 @@ public class Controller {
   }
 
   /**
+   * Suspends the current thread's execution until the provided condition evaluates to true.
+   *
+   * @param condition A {@link java.util.function.Supplier<Boolean>} condition that must be met to
+   *     resume execution.
+   * @return true if the condition was met before the timeout, false if the timeout was reached.
+   */
+  public boolean sleepUntil(java.util.function.Supplier<Boolean> condition) {
+    final long timeout = 20000; // 20 seconds timeout for the condition to become true
+    final long pollInterval = 250; // Check condition every 250 milliseconds
+
+    long startTime = System.currentTimeMillis();
+    while (!condition.get()) {
+      if (System.currentTimeMillis() - startTime > timeout) {
+        return false; // Timeout reached, condition not met
+      }
+      try {
+        Thread.sleep(pollInterval); // Wait a bit before checking the condition again
+      } catch (InterruptedException e) {
+        Thread.currentThread().interrupt(); // Restore the interrupted status
+        return false; // Interrupted during sleep
+      }
+    }
+    return true; // Condition met
+  }
+
+  /**
+   * Suspends the current thread's execution until the player gains exp
+   *
+   * @return true if the condition was met before the timeout, false if the timeout was reached.
+   */
+  public boolean sleepUntilGainedXp() {
+    final long timeout = 10000; // 10 seconds timeout for the condition to become true
+    final long pollInterval = 250; // Check condition every 250 milliseconds
+
+    long startTime = System.currentTimeMillis();
+    long startXp = getTotalXp();
+    while (startXp == getTotalXp()) {
+      if (System.currentTimeMillis() - startTime > timeout) {
+        return false; // Timeout reached, condition not met
+      }
+      try {
+        Thread.sleep(pollInterval); // Wait a bit before checking the condition again
+      } catch (InterruptedException e) {
+        Thread.currentThread().interrupt(); // Restore the interrupted status
+        return false; // Interrupted during sleep
+      }
+    }
+    return true; // We gained xp
+  }
+
+  /**
+   * Returns the total XP by summing up the player experience for each stat.
+   *
+   * @return the total XP as a long value
+   */
+  public long getTotalXp() {
+    long result = 0;
+
+    for (int statIndex = 0; statIndex < getStatCount(); statIndex++) {
+      result += getPlayerExperience(statIndex);
+    }
+
+    return result;
+  }
+
+  /**
    * Whether or not the client is loaded.
    *
    * @return boolean
@@ -451,6 +517,33 @@ public class Controller {
   }
 
   /**
+   * Sleeps until the player starts walking
+   *
+   * <p>Good to combine with sleepUntilNotMoving, so you can wait for the player to start responding
+   * to your action, then wait for them to finish
+   *
+   * @param timeout Max ms to wait until moving
+   */
+  public void sleepUntilMoving(long timeout) {
+    long start = System.currentTimeMillis();
+    while (Main.isRunning()
+        && !isCurrentlyWalking()
+        && start + timeout > System.currentTimeMillis()) {}
+  }
+
+  /**
+   * Sleeps until the player is no longer walking
+   *
+   * @param timeout Max ms to wait to stop moving
+   */
+  public void sleepUntilNotMoving(long timeout) {
+    long start = System.currentTimeMillis();
+    while (Main.isRunning()
+        && isCurrentlyWalking()
+        && start + timeout > System.currentTimeMillis()) {}
+  }
+
+  /**
    * Determines if the player is currently walking.
    *
    * @param serverIndex the index of the player on the server
@@ -755,6 +848,44 @@ public class Controller {
     }
 
     return result;
+  }
+
+  /**
+   * Performs the primary command option on the nearest reachable scenery ID
+   *
+   * @param sceneryId scenery ID
+   * @return boolean -- returns true if we interacted successfully
+   */
+  public boolean atObject(SceneryId id) {
+    setStatus("Interacting " + id.name() + " " + id.getId());
+    Main.logMethod("atObject", id);
+    return atObject(id.getId());
+  }
+
+  /**
+   * Performs the primary command option on the nearest reachable objectId
+   *
+   * @param id int
+   * @return boolean -- returns true if we interacted successfully
+   */
+  public boolean atObject(int id) {
+    Main.logMethod("atObject", id);
+    int[] coords = getNearestObjectById(id);
+    if (coords == null) return false;
+    return atObject(coords[0], coords[1]);
+  }
+
+  /**
+   * Performs the second command option on the nearest reachable objectId
+   *
+   * @param id int
+   * @return boolean -- returns true if we interacted successfully
+   */
+  public boolean atObject2(int id) {
+    Main.logMethod("atObject", id);
+    int[] coords = getNearestObjectById(id);
+    if (coords == null) return false;
+    return atObject2(coords[0], coords[1]);
   }
 
   /**
@@ -2423,11 +2554,14 @@ public class Controller {
     return (int) Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
   }
 
-  /*+
+  /*
+   * +
    * Retrieves the distance to a tile
    *
    * @param x1 int
+   *
    * @param x2 int
+   *
    * @return int
    */
   public int distanceTo(int x, int y) {
