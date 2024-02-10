@@ -4,8 +4,7 @@ import java.util.*;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
-
-import scripting.idlescript.other.AIOAIO.woodcutting.Normal;
+import scripting.idlescript.other.AIOAIO.woodcutting.Woodcut;
 
 class AIOAIOConfig {
   public List<AIOAIO_Skill> skills = new ArrayList<>();
@@ -16,23 +15,23 @@ class AIOAIOConfig {
             "Woodcutting",
             true,
             Arrays.asList(
-                new AIOAIO_Method("normal", true, Normal::run),
-                new AIOAIO_Method("oak", true, this::dummyAction),
-                new AIOAIO_Method("willow", true, this::dummyAction))));
+                new AIOAIO_Method("normal", true, Woodcut::run),
+                new AIOAIO_Method("oak", true, Woodcut::run),
+                new AIOAIO_Method("willow", true, Woodcut::run))));
     skills.add(
         new AIOAIO_Skill(
             "Fishing",
-            true,
+            false,
             Collections.singletonList(new AIOAIO_Method("Shrimp", true, this::dummyAction))));
     skills.add(
         new AIOAIO_Skill(
             "Agility",
-            true,
+            false,
             Collections.singletonList(
                 new AIOAIO_Method("Tree Gnome Village", true, this::dummyAction))));
   }
 
-  private int dummyAction(AIOAIO_State state) {
+  private int dummyAction() {
     System.out.println("Todo - Dummy action!");
     return 100;
   }

@@ -2,8 +2,7 @@ package scripting.idlescript.other.AIOAIO;
 
 import java.util.function.Supplier;
 
-
-class AIOAIO_Method {
+public class AIOAIO_Method {
   private String name;
   private boolean enabled; // Whether the user wants to run this Method or not
   private Supplier<Integer> action; // The actual bot loop - Returns how long to sleep

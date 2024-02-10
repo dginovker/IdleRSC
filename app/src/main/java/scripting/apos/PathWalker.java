@@ -279,7 +279,7 @@ public class PathWalker extends Script implements ActionListener, ItemListener {
         new Location("WILD - Mage Bank", 222, 107, false),
         new Location("WILD - Agility Course", 296, 138, false)
       };
-  private static final boolean DEBUG = false;
+  private static final boolean DEBUG = true;
   private static final int WORLD_W = 900;
   private static final int WORLD_H = 4050;
   private Node[][] nodes;
@@ -294,9 +294,9 @@ public class PathWalker extends Script implements ActionListener, ItemListener {
   private static final int[] bounds_1 = new int[] {2, 8, 55, 68, 44, 74, 117};
   private long start_time;
 
-  public PathWalker(String ex) {
-    // super(ex);
-  }
+  public PathWalker() {}
+
+  public PathWalker(String ex) {}
 
   @Override
   public void init(String params) {
@@ -532,9 +532,13 @@ public class PathWalker extends Script implements ActionListener, ItemListener {
   }
 
   public boolean walkPath() {
-    if (path == null) return false;
+    if (path == null) {
+      if (DEBUG) System.out.println("Path is null");
+      return false;
+    }
     Node last = path[path.length - 1];
     if (getX() == last.x && getY() == last.y) {
+      if (DEBUG) System.out.println("Reached destination");
       path = null;
       return false;
     }
@@ -761,6 +765,13 @@ public class PathWalker extends Script implements ActionListener, ItemListener {
     path_ptr = 0;
   }
 
+  /**
+   * Calculates path from current loc to destination
+   *
+   * @param x Dest x
+   * @param y Dest y
+   * @return Path to get from current location to x, y
+   */
   public final Path calcPath(int x, int y) {
     return calcPath(getX(), getY(), x, y);
   }
@@ -822,6 +833,7 @@ public class PathWalker extends Script implements ActionListener, ItemListener {
   }
 
   private Node[] astar(Node start, Node goal) {
+    System.out.println("Starting astar - DEBUG is " + DEBUG);
     if (DEBUG) {
       System.out.print("Calculating path from " + start + " to " + goal + "... ");
     }
