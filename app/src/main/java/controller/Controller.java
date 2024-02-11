@@ -126,14 +126,26 @@ public class Controller {
   }
 
   /**
-   * Suspends the current thread's execution until the provided condition evaluates to true.
+   * Suspends the current thread's execution until the provided condition evaluates to true or a 20
+   * second timeout is reached
    *
    * @param condition A {@link java.util.function.Supplier<Boolean>} condition that must be met to
    *     resume execution.
    * @return true if the condition was met before the timeout, false if the timeout was reached.
    */
   public boolean sleepUntil(java.util.function.Supplier<Boolean> condition) {
-    final long timeout = 20000; // 20 seconds timeout for the condition to become true
+    return sleepUntil(condition, 20_000);
+  }
+
+  /**
+   * Suspends the current thread's execution until the provided condition evaluates to true.
+   *
+   * @param condition A {@link java.util.function.Supplier<Boolean>} condition that must be met to
+   *     resume execution.
+   * @param timeout milliseconds before just returning, even if condition is not yet true
+   * @return true if the condition was met before the timeout, false if the timeout was reached.
+   */
+  public boolean sleepUntil(java.util.function.Supplier<Boolean> condition, int timeout) {
     final long pollInterval = 250; // Check condition every 250 milliseconds
 
     long startTime = System.currentTimeMillis();
@@ -157,6 +169,7 @@ public class Controller {
    * @return true if the condition was met before the timeout, false if the timeout was reached.
    */
   public boolean sleepUntilGainedXp() {
+    setStatus("Sleeping until xp drop");
     final long timeout = 10000; // 10 seconds timeout for the condition to become true
     final long pollInterval = 250; // Check condition every 250 milliseconds
 
@@ -620,7 +633,7 @@ public class Controller {
   }
 
   /**
-   * Walks to the specified tile, does not return until at tile.
+   * Walks to the specified tile, does not return until at tile, in combat, or a long timeout is reached
    *
    * @param x int
    * @param y int
@@ -630,30 +643,17 @@ public class Controller {
   }
 
   /**
-   * Walks to the specified tile, does not return until at tile or within tile radius.
+   * Walks to the specified tile, does not return until at tile or within tile radius, in combat, or a long timeout is reached
    *
    * @param x int
    * @param y int
    * @param radius int
    * @param force boolean
    */
-  public void walkTo(int x, int y, int radius, boolean force) { // offset applied
-    // TODO: re-examine usage of force, can this be removed?
-
+  public void walkTo(int x, int y, int radius, boolean unused) {
     if (x < 0 || y < 0) return;
 
     Main.logMethod("WalkTo", x, y, radius);
-    System.out.println("Controller WalkTo Called with " + x + ", " + y);
-
-    if (force) {
-      walkToActionSource(
-          mud,
-          mud.getLocalPlayerX(),
-          mud.getLocalPlayerZ(),
-          x - mud.getMidRegionBaseX(),
-          y - mud.getMidRegionBaseZ(),
-          false);
-    }
 
     int timeout = 60_000;
     long starttime = System.currentTimeMillis();
@@ -662,7 +662,8 @@ public class Controller {
             || (currentY() < y - radius)
             || (currentY() > y + radius))
         && Main.isRunning()
-        && System.currentTimeMillis() < starttime + timeout) { // offset applied
+        && !isInCombat()
+        && System.currentTimeMillis() < starttime + timeout) {
 
       int fudgeFactor = ThreadLocalRandom.current().nextInt(-radius, radius + 1);
 
@@ -674,12 +675,14 @@ public class Controller {
           y - mud.getMidRegionBaseZ() + fudgeFactor,
           false);
 
+      // Smart sleeping before clicking again
       for (int i = 0; i < 20_000; i += 1000) {
-        if (distanceTo(x, y) <= 5) break;
+        if (distanceTo(x, y) <= 5 || isInCombat()) break;
         sleep(1000);
       }
       sleep(1250);
     }
+
     if (System.currentTimeMillis() >= starttime + timeout) {
       Main.logMethod(
           "WalkTo",
@@ -741,17 +744,16 @@ public class Controller {
             true)
         != null) {
       skipTutorialIsland();
-      System.out.println("Skipping tutorial before walking..");
+      log("Skipping tutorial before walking..");
       sleep(5000);
-      System.out.println("Tutorial skipped");
     }
-    System.out.println("Walking to " + x + "," + y + " from " + currentX() + "," + currentY());
+    // System.out.println("Walking to " + x + "," + y + " from " + currentX() + "," + currentY());
     if (currentX() == x && currentY() == y) return;
     // Setup APOS compatibility because we're calling the APOS PathWalker..
     Script.setController(this);
     PathWalker pw = new PathWalker();
     pw.init(null);
-    System.out.println("Calcing path");
+    // System.out.println("Calcing path");
     PathWalker.Path path = pw.calcPath(x, y);
     pw.setPath(path);
     if (!pw.walkPath()) {

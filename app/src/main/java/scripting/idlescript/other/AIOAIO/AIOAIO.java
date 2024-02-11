@@ -35,9 +35,16 @@ public class AIOAIO extends IdleScript {
   }
 
   private int loop() {
-    if (System.currentTimeMillis() > state.endTime) {
+    if (System.currentTimeMillis() >= state.endTime) {
       state.currentSkill = state.botConfig.getRandomEnabledSkill();
       state.currentMethod = state.currentSkill.getRandomEnabledMethod();
+      Main.getController()
+          .log(
+              "Picked new method: "
+                  + state.currentMethod.getName()
+                  + " ("
+                  + state.currentSkill.getName()
+                  + ")");
       state.endTime = System.currentTimeMillis() + 600_000;
       state.methodStartup = true;
     }

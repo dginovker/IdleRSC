@@ -48,6 +48,18 @@ public class Combat_Utils {
     meleeWeaponsWithLevels.put(ItemId.BRONZE_AXE, 1);
   }
 
+  // Food to use for training
+  public static final ItemId[] food = {
+    ItemId.CABBAGE,
+    ItemId.SHRIMP,
+    ItemId.MACKEREL,
+    ItemId.TROUT,
+    ItemId.SALMON,
+    ItemId.LOBSTER,
+    ItemId.SWORDFISH,
+    ItemId.SHARK
+  };
+
   public static int getFightingGear() {
     Controller c = Main.getController();
     if (c.getNearestNpcById(NpcId.BANKER.getId(), false) == null) {
@@ -65,19 +77,50 @@ public class Combat_Utils {
     c.setStatus("Withdrawing best melee weapon");
     int playerAttackLevel = c.getCurrentStat(c.getStatId("Attack"));
     for (Map.Entry<ItemId, Integer> entry : meleeWeaponsWithLevels.entrySet()) {
-      if (playerAttackLevel >= entry.getValue() && c.getBankItemCount(entry.getKey().getId()) > 0) {
-        c.log("Found " + entry.getKey().name() + " as my best weapon Uwu");
-        c.withdrawItem(entry.getKey().getId());
-        c.closeBank();
-        c.sleep(750);
-        c.equipItemById(entry.getKey().getId());
-        break;
-      }
+      if (playerAttackLevel < entry.getValue() || c.getBankItemCount(entry.getKey().getId()) <= 0)
+        continue;
+      c.log("Found " + entry.getKey().name() + " as my best weapon Uwu");
+      c.withdrawItem(entry.getKey().getId());
+      c.closeBank();
+      c.sleep(750);
+      c.equipItemById(entry.getKey().getId());
+      break;
+    }
+    c.closeBank();
+    c.setStatus("Withdrawing food");
+    c.openBank();
+    for (ItemId foodId : food) {
+      if (c.getInventoryItemCount() >= 30) break;
+      c.withdrawItem(foodId.getId(), c.getBankItemCount(foodId.getId()));
+    }
+    c.sleep(2000);
+    if (c.getInventoryItemCount() >= 30) {
+      // deposit an item so we have room to loot bones
+      c.depositItem(c.getInventoryItemIds()[0], 1);
     }
     c.closeBank();
     AIOAIO.state.methodStartup = false;
     System.out.println("Combat Setup complete");
     return 680;
+  }
+
+  public static void eatFood() {
+    for (ItemId foodId : food) {
+      if (Main.getController().getInventoryItemCount(foodId.getId()) <= 0) continue;
+      Main.getController().itemCommand(foodId.getId());
+      break;
+    }
+  }
+
+  public static boolean hasFood() {
+    for (ItemId foodId : food) {
+      if (Main.getController().getInventoryItemCount(foodId.getId()) > 0) return true;
+    }
+    return false;
+  }
+
+  public static boolean needToEat() {
+    return Main.getController().getCurrentStat(Main.getController().getStatId("Hits")) <= 6;
   }
 
   /**
@@ -94,6 +137,7 @@ public class Combat_Utils {
   }
 
   public static void buryBones() {
+    Main.getController().setStatus("@red@Burying bones");
     Main.getController().itemCommand(ItemId.BONES.getId());
   }
 
@@ -102,6 +146,27 @@ public class Combat_Utils {
     Main.getController().setStatus("@red@Picking bones");
     Main.getController().pickupItem(lootCoord[0], lootCoord[1], ItemId.BONES.getId(), true, false);
     Main.getController()
-        .sleepUntil(() -> Main.getController().getInventoryItemCount(ItemId.BONES.getId()) > 0);
+        .sleepUntil(
+            () -> Main.getController().getInventoryItemCount(ItemId.BONES.getId()) > 0, 5000);
+  }
+
+  public static void runAndEat() {
+    Main.getController().setStatus("@yel@Running and eating");
+    Main.getController()
+        .walkToAsync(Main.getController().currentX(), Main.getController().currentY(), 5);
+    Main.getController().sleep(680);
+    eatFood();
+  }
+
+  public static void safelyAbortMethod() {
+    if (Main.getController().getNearestNpcById(NpcId.BANKER.getId(), false) == null) {
+      Main.getController().setStatus("Running to safety");
+      Main.getController()
+          .walkTowards(
+              Main.getController().getNearestBank()[0], Main.getController().getNearestBank()[1]);
+    } else {
+      AIOAIO.state.endTime = System.currentTimeMillis();
+      Main.getController().log("Aborted fighting method due to lack of food");
+    }
   }
 }

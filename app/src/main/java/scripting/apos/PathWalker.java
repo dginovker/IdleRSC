@@ -1,6 +1,5 @@
 package scripting.apos;
 
-import bot.Main;
 import compatibility.apos.Script;
 import java.awt.*;
 import java.awt.event.*;
@@ -280,7 +279,7 @@ public class PathWalker extends Script implements ActionListener, ItemListener {
         new Location("WILD - Mage Bank", 222, 107, false),
         new Location("WILD - Agility Course", 296, 138, false)
       };
-  private static final boolean DEBUG = true;
+  private static final boolean DEBUG = false;
   private static final int WORLD_W = 900;
   private static final int WORLD_H = 4050;
   private static Node[][] nodes;
@@ -347,7 +346,7 @@ public class PathWalker extends Script implements ActionListener, ItemListener {
     // If init is called with null, it is being called by another script,
     // so don't create the UI.
     if (params != null) {
-      System.out.println("Opening PathWalker GUI...");
+      if (DEBUG) System.out.println("Opening PathWalker GUI...");
       createFrame();
     }
   }
@@ -559,8 +558,6 @@ public class PathWalker extends Script implements ActionListener, ItemListener {
       if (n == null) return true;
       int x = n.x;
       int y = n.y;
-      Main.getController().setStatus("Walking to " + x + "," + y);
-      System.out.println("Pathwalker Walking to " + x + "," + y);
       // radius can cross into the other side of gate because goal node has to be on
       // the other side
       // to call if statement
@@ -850,7 +847,6 @@ public class PathWalker extends Script implements ActionListener, ItemListener {
   }
 
   private Node[] astar(Node start, Node goal) {
-    System.out.println("Starting astar - DEBUG is " + DEBUG);
     if (DEBUG) {
       System.out.print("Calculating path from " + start + " to " + goal + "... ");
     }
