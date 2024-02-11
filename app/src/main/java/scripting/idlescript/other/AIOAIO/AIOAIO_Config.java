@@ -34,9 +34,25 @@ class AIOAIOConfig {
                 new AIOAIO_Method("Tree Gnome Village", true, GnomeVillage::run))));
     skills.add(
         new AIOAIO_Skill(
+            "Strength",
+            true,
+            Arrays.asList(
+                new AIOAIO_Method("Lummy Cows", true, Cow::attack),
+                new AIOAIO_Method("Draynor Jailguard", true, JailGuard::attack))));
+    skills.add(
+        new AIOAIO_Skill(
+            "Defense",
+            true,
+            Arrays.asList(
+                new AIOAIO_Method("Lummy Cows", true, Cow::attack),
+                new AIOAIO_Method("Draynor Jailguard", true, JailGuard::attack))));
+    skills.add(
+        new AIOAIO_Skill(
             "Attack",
             true,
-            Collections.singletonList(new AIOAIO_Method("Lummy Chickens", true, Chicken::attack))));
+            Arrays.asList(
+                new AIOAIO_Method("Lummy Cows", true, Cow::attack),
+                new AIOAIO_Method("Draynor Jailguard", true, JailGuard::attack))));
   }
 
   public AIOAIO_Skill getRandomEnabledSkill() {

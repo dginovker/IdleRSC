@@ -754,7 +754,21 @@ public class Controller {
     System.out.println("Calcing path");
     PathWalker.Path path = pw.calcPath(x, y);
     pw.setPath(path);
-    if (!pw.walkPath()) System.out.println("Done walk to " + x + "," + y);
+    if (!pw.walkPath()) {
+      if (currentX() == x && currentY() == y) {
+        log("Done walk to " + x + "," + y);
+      } else {
+        log(
+            "Failed to walk to "
+                + x
+                + ","
+                + y
+                + ", gonna yeet off in a random direction to get unstuck");
+        walkTo(
+            currentX() + ThreadLocalRandom.current().nextInt(-5, 6),
+            currentY() + ThreadLocalRandom.current().nextInt(-5, 6));
+      }
+    }
   }
 
   /**
@@ -4513,7 +4527,8 @@ public class Controller {
 
   private void walkToActionSource(
       mudclient mud, int startX, int startZ, int destX, int destZ, boolean walkToEntity) {
-    // System.out.println("Controller walkToActionSource with " + startX + ", " + startZ + ", " +
+    // System.out.println("Controller walkToActionSource with " + startX + ", " +
+    // startZ + ", " +
     // destX + ", " + destZ + ", " + walkToEntity);
 
     StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
