@@ -643,6 +643,7 @@ public class Controller {
     if (x < 0 || y < 0) return;
 
     Main.logMethod("WalkTo", x, y, radius);
+    System.out.println("Controller WalkTo Called with " + x + ", " + y);
 
     if (force) {
       walkToActionSource(
@@ -654,11 +655,14 @@ public class Controller {
           false);
     }
 
+    int timeout = 60_000;
+    long starttime = System.currentTimeMillis();
     while (((currentX() < x - radius)
             || (currentX() > x + radius)
             || (currentY() < y - radius)
             || (currentY() > y + radius))
-        && Main.isRunning()) { // offset applied
+        && Main.isRunning()
+        && System.currentTimeMillis() < starttime + timeout) { // offset applied
 
       int fudgeFactor = ThreadLocalRandom.current().nextInt(-radius, radius + 1);
 
@@ -670,7 +674,26 @@ public class Controller {
           y - mud.getMidRegionBaseZ() + fudgeFactor,
           false);
 
-      sleep(1280); // was 250
+      for (int i = 0; i < 20_000; i += 1000) {
+        if (distanceTo(x, y) <= 5) break;
+        sleep(1000);
+      }
+      sleep(1250);
+    }
+    if (System.currentTimeMillis() >= starttime + timeout) {
+      Main.logMethod(
+          "WalkTo",
+          "FAILED to walk from ",
+          currentX(),
+          currentY(),
+          " to ",
+          x,
+          y,
+          " with a radius of ",
+          radius,
+          ". We timed out waiting ",
+          timeout,
+          " ms!");
     }
   }
 
@@ -707,10 +730,25 @@ public class Controller {
    * @param y
    */
   public void walkTowards(int x, int y) {
+    if (getNearestNpcByIds(
+            new int[] {
+              NpcId.GUIDE.getId(),
+              NpcId.PETER_SKIPPIN.getId(),
+              NpcId.COMBAT_INSTRUCTOR.getId(),
+              NpcId.COOKING_INSTRUCTOR.getId(),
+              NpcId.MAGIC_INSTRUCTOR.getId()
+            },
+            true)
+        != null) {
+      skipTutorialIsland();
+      System.out.println("Skipping tutorial before walking..");
+      sleep(5000);
+      System.out.println("Tutorial skipped");
+    }
+    System.out.println("Walking to " + x + "," + y + " from " + currentX() + "," + currentY());
     if (currentX() == x && currentY() == y) return;
     // Setup APOS compatibility because we're calling the APOS PathWalker..
     Script.setController(this);
-    System.out.println("Walking to " + x + "," + y);
     PathWalker pw = new PathWalker();
     pw.init(null);
     System.out.println("Calcing path");
@@ -2088,10 +2126,21 @@ public class Controller {
    * @param slotIndex int
    */
   public void equipItem(int slotIndex) {
+    if (slotIndex < 0 || slotIndex > 30)
+      System.out.println("Warning: Trying to equip an invalid slot");
     while (mud.packetHandler.getClientStream().hasFinishedPackets()) sleep(1);
     mud.packetHandler.getClientStream().newPacket(169);
     mud.packetHandler.getClientStream().bufferBits.putShort(slotIndex);
     mud.packetHandler.getClientStream().finishPacket();
+  }
+
+  /**
+   * Equipts an item by ID. The item must be in your inventory
+   *
+   * @param id the ID of the item to equip
+   */
+  public void equipItemById(int id) {
+    equipItem(getInventoryItemSlotIndex(id));
   }
 
   /**
@@ -4464,6 +4513,14 @@ public class Controller {
 
   private void walkToActionSource(
       mudclient mud, int startX, int startZ, int destX, int destZ, boolean walkToEntity) {
+    // System.out.println("Controller walkToActionSource with " + startX + ", " + startZ + ", " +
+    // destX + ", " + destZ + ", " + walkToEntity);
+
+    StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+    for (StackTraceElement element : stackTraceElements) {
+      // System.out.println(element.toString());
+    }
+
     reflector.mudInvoker(mud, "walkToActionSource", startX, startZ, destX, destZ, walkToEntity);
   }
 

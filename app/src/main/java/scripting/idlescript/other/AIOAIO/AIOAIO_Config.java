@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import scripting.idlescript.other.AIOAIO.agility.GnomeVillage;
+import scripting.idlescript.other.AIOAIO.combat.*;
 import scripting.idlescript.other.AIOAIO.fishing.Fish;
 import scripting.idlescript.other.AIOAIO.woodcutting.Woodcut;
 
@@ -28,14 +29,14 @@ class AIOAIOConfig {
     skills.add(
         new AIOAIO_Skill(
             "Agility",
-            true,
+            false,
             Collections.singletonList(
                 new AIOAIO_Method("Tree Gnome Village", true, GnomeVillage::run))));
-  }
-
-  private int dummyAction() {
-    System.out.println("Todo - Dummy action!");
-    return 100;
+    skills.add(
+        new AIOAIO_Skill(
+            "Attack",
+            true,
+            Collections.singletonList(new AIOAIO_Method("Lummy Chickens", true, Chicken::attack))));
   }
 
   public AIOAIO_Skill getRandomEnabledSkill() {

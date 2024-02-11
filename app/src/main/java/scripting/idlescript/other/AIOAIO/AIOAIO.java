@@ -23,7 +23,13 @@ public class AIOAIO extends IdleScript {
       AIOAIO_GUI.setupGUI();
     }
     if (state.startPressed) {
-      return loop();
+      try {
+        return Math.max(loop(), 50);
+      } catch (Exception e) {
+        e.printStackTrace();
+        System.out.println("Exception occured! Sleeping 1.5s...");
+        return 1500;
+      }
     }
     return 50;
   }
@@ -32,7 +38,8 @@ public class AIOAIO extends IdleScript {
     if (System.currentTimeMillis() > state.endTime) {
       state.currentSkill = state.botConfig.getRandomEnabledSkill();
       state.currentMethod = state.currentSkill.getRandomEnabledMethod();
-      state.endTime = System.currentTimeMillis() + 60_000;
+      state.endTime = System.currentTimeMillis() + 600_000;
+      state.methodStartup = true;
     }
     return state.currentMethod.performAction();
   }

@@ -102,7 +102,8 @@ public class Main {
   private static final Thread messageListener = null; // see MessageListener.java
   private static Thread debuggerThread = null;
   private static Controller controller =
-      null; // this is the queen bee that controls the actual bot and is the native scripting
+      null; // this is the queen bee that controls the actual bot and is the native
+  // scripting
   // language.
   private static Object currentRunningScript =
       null; // the object instance of the current running script.
@@ -125,7 +126,7 @@ public class Main {
     "Orange Theme",
     "Gold Theme"
   };
-  private static final Color[][] colorCodes = { //   {background, text color, log color}
+  private static final Color[][] colorCodes = { // {background, text color, log color}
     {
       new java.awt.Color(40, 40, 40, 255), // Runelite Dark Mode
       new java.awt.Color(219, 219, 219, 255)
@@ -195,6 +196,7 @@ public class Main {
   public static Color getColorCode(int x, int y) {
     return colorCodes[x][y];
   }
+
   /**
    * Set the Color elements for the Theme name entered Changes themeColorBack and themeTextColor
    *
@@ -231,6 +233,7 @@ public class Main {
                 (int) screenSize.getHeight() - 405,
                 topLeft.y + (rscFrame.getHeight() / 2) - (scriptFrame.getHeight() / 2))));
   }
+
   /**
    * Get the Color[] for the Theme name entered
    *
@@ -249,6 +252,7 @@ public class Main {
   public static Object getCurrentRunningScript() {
     return currentRunningScript;
   }
+
   /** The initial program entrypoint for IdleRSC. */
   public static void main(String[] args)
       throws MalformedURLException, ClassNotFoundException, NoSuchMethodException,
@@ -446,53 +450,53 @@ public class Main {
           System.currentTimeMillis() + 25000L + (long) (Math.random() * 10000));
     }
 
-    // System.out.println("Next screen refresh at: " + DrawCallback.getNextRefresh());
+    // System.out.println("Next screen refresh at: " +
+    // DrawCallback.getNextRefresh());
     while (true) {
       if (isRunning()) {
-        if (currentRunningScript != null) {
+        if (currentRunningScript == null) continue;
 
-          // handle native scripts
-          if (currentRunningScript instanceof IdleScript) {
-            ((IdleScript) currentRunningScript).setController(controller);
-            int sleepAmount =
-                ((IdleScript) currentRunningScript).start(config.getScriptArguments()) + 1;
-            Thread.sleep(sleepAmount);
-          } else if (currentRunningScript instanceof compatibility.sbot.Script) {
-            controller.displayMessage(
-                "@red@IdleRSC: Note that SBot scripts are mostly, but not fully compatible.", 3);
-            controller.displayMessage(
-                "@red@IdleRSC: If you still experience problems after modifying script please report.",
-                3);
-            ((compatibility.sbot.Script) currentRunningScript).setController(controller);
+        // handle native scripts
+        if (currentRunningScript instanceof IdleScript) {
+          ((IdleScript) currentRunningScript).setController(controller);
+          int sleepAmount =
+              ((IdleScript) currentRunningScript).start(config.getScriptArguments()) + 1;
+          Thread.sleep(sleepAmount);
+        } else if (currentRunningScript instanceof compatibility.sbot.Script) {
+          controller.displayMessage(
+              "@red@IdleRSC: Note that SBot scripts are mostly, but not fully compatible.", 3);
+          controller.displayMessage(
+              "@red@IdleRSC: If you still experience problems after modifying script please report.",
+              3);
+          ((compatibility.sbot.Script) currentRunningScript).setController(controller);
 
-            String sbotScriptName = config.getScriptName();
-            ((compatibility.sbot.Script) currentRunningScript)
-                .start(sbotScriptName, config.getScriptArguments());
+          String sbotScriptName = config.getScriptName();
+          ((compatibility.sbot.Script) currentRunningScript)
+              .start(sbotScriptName, config.getScriptArguments());
 
-            Thread.sleep(618); // wait 1 tick before performing next action
-          } else if (currentRunningScript instanceof compatibility.apos.Script) {
-            if (!controller.isSleeping()) {
-              StringBuilder params = new StringBuilder();
+          Thread.sleep(618); // wait 1 tick before performing next action
+        } else if (currentRunningScript instanceof compatibility.apos.Script) {
+          if (!controller.isSleeping()) {
+            StringBuilder params = new StringBuilder();
 
-              if (config.getScriptArguments() != null) {
-                for (int i = 0; i < config.getScriptArguments().length; i++) {
-                  String arg = config.getScriptArguments()[i];
-                  if (i == 0) params = new StringBuilder(arg);
-                  else params.append(" ").append(arg);
-                }
+            if (config.getScriptArguments() != null) {
+              for (int i = 0; i < config.getScriptArguments().length; i++) {
+                String arg = config.getScriptArguments()[i];
+                if (i == 0) params = new StringBuilder(arg);
+                else params.append(" ").append(arg);
               }
-
-              if (!aposInitCalled) {
-                Script.setController(controller);
-                ((compatibility.apos.Script) currentRunningScript).init(params.toString());
-                aposInitCalled = true;
-              }
-
-              int sleepAmount = ((compatibility.apos.Script) currentRunningScript).main() + 1;
-              Thread.sleep(sleepAmount);
-            } else {
-              Thread.sleep(10);
             }
+
+            if (!aposInitCalled) {
+              Script.setController(controller);
+              ((compatibility.apos.Script) currentRunningScript).init(params.toString());
+              aposInitCalled = true;
+            }
+
+            int sleepAmount = ((compatibility.apos.Script) currentRunningScript).main() + 1;
+            Thread.sleep(sleepAmount);
+          } else {
+            Thread.sleep(10);
           }
         }
 
@@ -539,6 +543,7 @@ public class Main {
       logArea.setCaretPosition(logArea.getDocument().getLength());
     }
   }
+
   /**
    * For logging function calls in an easy manner.
    *
@@ -641,7 +646,8 @@ public class Main {
     }
 
     menuItem = new JMenuItem("Account Startup Settings", KeyEvent.VK_F4); // s
-    // menuItem.setAccelerator(KeyStroke.getKeyStroke((char) KeyEvent.VK_F4)); //opens 2 authframes
+    // menuItem.setAccelerator(KeyStroke.getKeyStroke((char) KeyEvent.VK_F4));
+    // //opens 2 authframes
     menuItem.addActionListener(
         e -> {
           AuthFrame authFrame =
@@ -658,6 +664,7 @@ public class Main {
         });
     settingsMenu.add(menuItem);
   }
+
   /**
    * Sets up the sidepanel
    *
@@ -1190,13 +1197,13 @@ public class Main {
       // JButton cancelButton = new JButton("Force cancel script");
       JButton closeWindow = new JButton("Close this warning");
 
-      //      cancelButton.addActionListener(
-      //          e -> {
-      //            setRunning(false);
-      //            currentRunningScript = null; //did not work
-      //            scriptFrame.setVisible(false);
-      //            scriptFrame.dispose();
-      //          });
+      // cancelButton.addActionListener(
+      // e -> {
+      // setRunning(false);
+      // currentRunningScript = null; //did not work
+      // scriptFrame.setVisible(false);
+      // scriptFrame.dispose();
+      // });
 
       closeWindow.addActionListener(
           e -> {
@@ -1223,6 +1230,7 @@ public class Main {
       scriptFrame.setSize(225, 125); // test this
     }
   }
+
   /**
    * Returns the global Controller instance.
    *
@@ -1251,6 +1259,7 @@ public class Main {
   public static String getThemeName() {
     return themeName;
   }
+
   /**
    * Used by the WindowListener for tracking the log window.
    *
@@ -1259,6 +1268,7 @@ public class Main {
   public static boolean isLogWindowOpen() {
     return logWindowCheckbox.isSelected();
   }
+
   /**
    * Used by the WindowListener for tracking the side window.
    *
@@ -1267,6 +1277,7 @@ public class Main {
   public static boolean isSideWindowOpen() {
     return sidebarCheckbox.isSelected();
   }
+
   /**
    * Returns whether or not a script is running.
    *

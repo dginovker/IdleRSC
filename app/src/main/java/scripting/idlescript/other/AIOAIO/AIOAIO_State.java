@@ -10,10 +10,12 @@ public class AIOAIO_State {
   public AIOAIO_Skill currentSkill;
 
   public AIOAIO_Method currentMethod;
-
   public AIOAIOConfig botConfig = new AIOAIOConfig();
   public boolean guiSetup = false;
   public boolean startPressed = false;
+  public boolean methodStartup =
+      true; // Usable in scripts to determine if you've done whatever setup is needed (gets
+  // reset to true everytime the remaining time runs out)
 
   public long endTime = System.currentTimeMillis();
 

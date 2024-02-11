@@ -73,6 +73,7 @@ public class Woodcut {
     if (c.getNearestNpcById(95, false) == null) {
       c.setStatus("Walking to Bank");
       c.walkTowards(c.getNearestBank()[0], c.getNearestBank()[1]);
+      return 100;
     }
     c.setStatus("Opening bank");
     c.openBank();

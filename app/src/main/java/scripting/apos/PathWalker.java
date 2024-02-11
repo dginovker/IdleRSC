@@ -1,5 +1,6 @@
 package scripting.apos;
 
+import bot.Main;
 import compatibility.apos.Script;
 import java.awt.*;
 import java.awt.event.*;
@@ -282,7 +283,7 @@ public class PathWalker extends Script implements ActionListener, ItemListener {
   private static final boolean DEBUG = true;
   private static final int WORLD_W = 900;
   private static final int WORLD_H = 4050;
-  private Node[][] nodes;
+  private static Node[][] nodes;
   private Node[] path;
   private long wait_time;
   private int path_ptr;
@@ -558,6 +559,8 @@ public class PathWalker extends Script implements ActionListener, ItemListener {
       if (n == null) return true;
       int x = n.x;
       int y = n.y;
+      Main.getController().setStatus("Walking to " + x + "," + y);
+      System.out.println("Pathwalker Walking to " + x + "," + y);
       // radius can cross into the other side of gate because goal node has to be on
       // the other side
       // to call if statement
@@ -565,10 +568,11 @@ public class PathWalker extends Script implements ActionListener, ItemListener {
         atObject(341, 487);
         System.out.println("Opening Tav gate going west");
         wait_time = c_time + 8000;
-      } else if (isAtApproxCoords(352, 487, 10) && (n.x <= 341)) {
-        atObject(341, 487);
+      } else if ((isAtApproxCoords(342, 487, 10) || isAtApproxCoords(342, 500, 10)) && n.x <= 341) {
         System.out.println("Opening Tav gate going east");
-        wait_time = c_time + 8000;
+        walkTo(342, 487);
+        atObject(341, 487);
+        wait_time = c_time + 2000;
       } else if ((isAtApproxCoords(343, 593, 12) || isAtApproxCoords(356, 584, 7)) && (n.y < 581)) {
         atObject(343, 581);
         System.out.println("Opening Tav gate going north");

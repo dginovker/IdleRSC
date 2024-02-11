@@ -10,6 +10,7 @@ public class GnomeVillage {
   public static int run() {
     c = Main.getController();
     c.setBatchBarsOn();
+    System.out.println("Gnome Village run");
 
     if (!isInsideGnomeAgilityArena()) c.walkTowards(692, 494);
     else if (c.distanceTo(692, 499) <= 3) {
@@ -33,7 +34,7 @@ public class GnomeVillage {
       c.sleepUntilGainedXp();
       c.sleep(1250);
     } else {
-      c.atObject(SceneryId.LOG_GNOME_COURSE.getId());
+      c.atObject(SceneryId.LOG_GNOME_COURSE);
       // Default - Cross the log
       c.sleepUntilGainedXp();
     }
