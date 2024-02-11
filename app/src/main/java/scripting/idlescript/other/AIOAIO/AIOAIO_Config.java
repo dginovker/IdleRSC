@@ -16,7 +16,7 @@ class AIOAIOConfig {
     skills.add(
         new AIOAIO_Skill(
             "Woodcutting",
-            false,
+            true,
             Arrays.asList(
                 new AIOAIO_Method("normal", true, Woodcut::run),
                 new AIOAIO_Method("oak", true, Woodcut::run),
@@ -24,12 +24,12 @@ class AIOAIOConfig {
     skills.add(
         new AIOAIO_Skill(
             "Fishing",
-            false,
+            true,
             Collections.singletonList(new AIOAIO_Method("Shrimp", true, Fish::run))));
     skills.add(
         new AIOAIO_Skill(
             "Agility",
-            false,
+            true,
             Collections.singletonList(
                 new AIOAIO_Method("Tree Gnome Village", true, GnomeVillage::run))));
     skills.add(

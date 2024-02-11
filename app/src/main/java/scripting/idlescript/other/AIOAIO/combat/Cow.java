@@ -36,8 +36,8 @@ public class Cow {
     else if (c.isInCombat()) c.sleepUntilGainedXp();
     else if (c.getNearestNpcById(NpcId.COW_ATTACKABLE.getId(), false) == null) findCows();
     // The NPC we want to bop is found at this point
-    else if (c.getInventoryItemCount() < 30 && c.getNearestItemById(ItemId.BONES.getId()) != null)
-      Combat_Utils.lootBones();
+    else if (c.getInventoryItemCount() < 30
+        && c.getNearestItemById(ItemId.BONES.getId(), 5) != null) Combat_Utils.lootBones();
     else Combat_Utils.attackNpc(NpcId.COW_ATTACKABLE);
     return 50;
   }

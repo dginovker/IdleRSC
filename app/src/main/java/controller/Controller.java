@@ -633,7 +633,8 @@ public class Controller {
   }
 
   /**
-   * Walks to the specified tile, does not return until at tile, in combat, or a long timeout is reached
+   * Walks to the specified tile, does not return until at tile, in combat, or a long timeout is
+   * reached
    *
    * @param x int
    * @param y int
@@ -643,7 +644,8 @@ public class Controller {
   }
 
   /**
-   * Walks to the specified tile, does not return until at tile or within tile radius, in combat, or a long timeout is reached
+   * Walks to the specified tile, does not return until at tile or within tile radius, in combat, or
+   * a long timeout is reached
    *
    * @param x int
    * @param y int
@@ -747,7 +749,8 @@ public class Controller {
       log("Skipping tutorial before walking..");
       sleep(5000);
     }
-    // System.out.println("Walking to " + x + "," + y + " from " + currentX() + "," + currentY());
+    // System.out.println("Walking to " + x + "," + y + " from " + currentX() + ","
+    // + currentY());
     if (currentX() == x && currentY() == y) return;
     // Setup APOS compatibility because we're calling the APOS PathWalker..
     Script.setController(this);
@@ -1861,12 +1864,24 @@ public class Controller {
   }
 
   /**
-   * Retrieves the coordinates of the specified item, if on the ground.
+   * Retrieves the coordinates of the nearest specified item within the given distance, if on the
+   * ground
    *
    * @param itemId int
    * @return int[] -- [x, y]. Returns null if item not found.
    */
   public int[] getNearestItemById(int itemId) {
+    return getNearestItemById(itemId, 20000);
+  }
+
+  /**
+   * Retrieves the coordinates of the specified item, if on the ground.
+   *
+   * @param itemId int
+   * @param maxDistance Maximum distance to bother checking
+   * @return int[] -- [x, y]. Returns null if item not found.
+   */
+  public int[] getNearestItemById(int itemId, int maxDistance) {
     int groundItemCount = getGroundItemsCount();
     int[] groundItemID = getGroundItems();
     int[] groundItemX = getGroundItemsX();
@@ -1874,17 +1889,16 @@ public class Controller {
 
     int botX = currentX();
     int botZ = currentY();
-    int closestDistance = 99999;
     int closestItemIndex = -1;
 
     for (int i = 0; i < groundItemCount; i++) {
       if (itemId == groundItemID[i]) {
         int result = distance(groundItemX[i], groundItemZ[i], botX, botZ);
-        if (result < closestDistance) {
+        if (result <= maxDistance) {
           // Main.logMethod("getnearestitem bleh", botX, botZ, groundItemX[i],
           // groundItemZ[i],
           // result, closestDistance);
-          closestDistance = result;
+          maxDistance = result;
           closestItemIndex = i;
         }
       }

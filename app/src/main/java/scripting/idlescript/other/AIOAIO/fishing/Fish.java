@@ -3,6 +3,7 @@ package scripting.idlescript.other.AIOAIO.fishing;
 import bot.Main;
 import controller.Controller;
 import models.entities.ItemId;
+import scripting.idlescript.other.AIOAIO.AIOAIO;
 
 public class Fish {
   private static Controller c;
@@ -52,10 +53,16 @@ public class Fish {
     if (c.getNearestNpcById(95, false) == null) {
       c.setStatus("Walking to Bank");
       c.walkTowards(c.getNearestBank()[0], c.getNearestBank()[1]);
+      return 50;
     }
     c.setStatus("Opening bank");
     c.openBank();
     c.sleep(680);
+    if (c.getBankItemCount(ItemId.NET.getId()) <= 0) {
+      c.log("No net! Skipping task..");
+      AIOAIO.state.endTime = System.currentTimeMillis();
+      return 50;
+    }
     c.setStatus("Withdrawing net");
     c.sleep(680);
     c.withdrawItem(ItemId.NET.getId());
