@@ -129,8 +129,7 @@ public class Controller {
    * Suspends the current thread's execution until the provided condition evaluates to true or a 20
    * second timeout is reached
    *
-   * @param condition A Supplier<Boolean> condition that must be met to
-   *     resume execution.
+   * @param condition A Supplier<Boolean> condition that must be met to resume execution.
    * @return true if the condition was met before the timeout, false if the timeout was reached.
    */
   public boolean sleepUntil(java.util.function.Supplier<Boolean> condition) {
@@ -140,8 +139,7 @@ public class Controller {
   /**
    * Suspends the current thread's execution until the provided condition evaluates to true.
    *
-   * @param condition A Supplier<Boolean> condition that must be met to
-   *     resume execution.
+   * @param condition A Supplier<Boolean> condition that must be met to resume execution.
    * @param timeout milliseconds before just returning, even if condition is not yet true
    * @return true if the condition was met before the timeout, false if the timeout was reached.
    */
