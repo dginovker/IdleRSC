@@ -1,4 +1,4 @@
-package scripting.idlescript.other.AIOAIO.core.gui;
+package scripting.idlescript.other.AIOAIO.core;
 
 import bot.Main;
 import java.io.File;
@@ -17,9 +17,8 @@ import java.util.stream.Collectors;
 import scripting.idlescript.other.AIOAIO.agility.GnomeVillage;
 import scripting.idlescript.other.AIOAIO.combat.Cow;
 import scripting.idlescript.other.AIOAIO.combat.JailGuard;
-import scripting.idlescript.other.AIOAIO.core.AIOAIO_Skill;
-import scripting.idlescript.other.AIOAIO.core.AIOAIO_Task;
 import scripting.idlescript.other.AIOAIO.fishing.Fish;
+import scripting.idlescript.other.AIOAIO.thieving.AlKharidMan;
 import scripting.idlescript.other.AIOAIO.woodcutting.Woodcut;
 
 public class AIOAIO_Config {
@@ -45,7 +44,25 @@ public class AIOAIO_Config {
     List<AIOAIO_Skill> defaultSkills =
         Arrays.asList(
             new AIOAIO_Skill(
-                "Woodcutting",
+                "Attack",
+                true,
+                Arrays.asList(
+                    new AIOAIO_Task("Lummy Cows", true, Cow::attack),
+                    new AIOAIO_Task("Draynor Jailguard", true, JailGuard::attack))),
+            new AIOAIO_Skill(
+                "Defense",
+                true,
+                Arrays.asList(
+                    new AIOAIO_Task("Lummy Cows", true, Cow::attack),
+                    new AIOAIO_Task("Draynor Jailguard", true, JailGuard::attack))),
+            new AIOAIO_Skill(
+                "Strength",
+                true,
+                Arrays.asList(
+                    new AIOAIO_Task("Lummy Cows", true, Cow::attack),
+                    new AIOAIO_Task("Draynor Jailguard", true, JailGuard::attack))),
+            new AIOAIO_Skill(
+                "Woodcut",
                 true,
                 Arrays.asList(
                     new AIOAIO_Task("normal", true, Woodcut::run),
@@ -61,23 +78,10 @@ public class AIOAIO_Config {
                 Collections.singletonList(
                     new AIOAIO_Task("Tree Gnome Village", true, GnomeVillage::run))),
             new AIOAIO_Skill(
-                "Strength",
+                "Thieving",
                 true,
-                Arrays.asList(
-                    new AIOAIO_Task("Lummy Cows", true, Cow::attack),
-                    new AIOAIO_Task("Draynor Jailguard", true, JailGuard::attack))),
-            new AIOAIO_Skill(
-                "Defense",
-                true,
-                Arrays.asList(
-                    new AIOAIO_Task("Lummy Cows", true, Cow::attack),
-                    new AIOAIO_Task("Draynor Jailguard", true, JailGuard::attack))),
-            new AIOAIO_Skill(
-                "Attack",
-                true,
-                Arrays.asList(
-                    new AIOAIO_Task("Lummy Cows", true, Cow::attack),
-                    new AIOAIO_Task("Draynor Jailguard", true, JailGuard::attack))));
+                Collections.singletonList(
+                    new AIOAIO_Task("Al Kharid Man", true, AlKharidMan::run))));
     for (AIOAIO_Skill skillConfig : defaultSkills) {
       String skillEnabledKey = skillConfig.getName() + ".enabled";
       boolean skillEnabled =

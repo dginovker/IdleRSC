@@ -747,15 +747,15 @@ public class Controller {
       log("Skipping tutorial before walking..");
       sleep(5000);
     }
-    // System.out.println("Walking to " + x + "," + y + " from " + currentX() + ","
-    // + currentY());
+    System.out.println("Walking to " + x + "," + y + " from " + currentX() + "," + currentY());
     if (currentX() == x && currentY() == y) return;
     // Setup APOS compatibility because we're calling the APOS PathWalker..
     Script.setController(this);
     PathWalker pw = new PathWalker();
     pw.init(null);
-    // System.out.println("Calcing path");
+    System.out.println("Calcing path");
     PathWalker.Path path = pw.calcPath(x, y);
+    if (path == null) log("Failed to calculate a path to " + x + "," + y);
     pw.setPath(path);
     if (!pw.walkPath()) {
       if (currentX() == x && currentY() == y) {
@@ -767,9 +767,8 @@ public class Controller {
                 + ","
                 + y
                 + ", gonna yeet off in a random direction to get unstuck");
-        walkTo(
-            currentX() + ThreadLocalRandom.current().nextInt(-5, 6),
-            currentY() + ThreadLocalRandom.current().nextInt(-5, 6));
+        walkToAsync(currentX(), currentY(), 5);
+        sleep(ThreadLocalRandom.current().nextInt(600, 5000));
       }
     }
   }
@@ -1285,7 +1284,6 @@ public class Controller {
     int botX = mud.localPlayer.currentX;
     int botZ = mud.localPlayer.currentZ;
     int closestDistance = Integer.MAX_VALUE;
-    int closestNpcIndex = -1;
 
     for (int i = 0; i < npcCount; i++) {
 
@@ -4623,6 +4621,7 @@ public class Controller {
       sleep(GAME_TICK);
     }
   }
+
   /**
    * Whether or not the server is configured to be authentic. This returns true for Uranium, false
    * for Coleslaw.
@@ -4813,6 +4812,7 @@ public class Controller {
   public void setShouldSleep(boolean shouldSleep) {
     this.shouldSleep = shouldSleep;
   }
+
   /**
    * If fatigue is greater or equal to `fatigueToSleepAt`, this will commence the sleep process and
    * IdleRSC will fill in the answer from the OCR. Has no effect on Coleslaw.

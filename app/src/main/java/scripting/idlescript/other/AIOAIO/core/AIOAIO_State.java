@@ -1,7 +1,5 @@
 package scripting.idlescript.other.AIOAIO.core;
 
-import scripting.idlescript.other.AIOAIO.core.gui.AIOAIO_Config;
-
 public class AIOAIO_State {
   /**
    * This class exists to not clutter up AIOAIO.java tbh Try to keep things isolated! The bot should

@@ -21,6 +21,7 @@ public class GnomeVillage {
     } else if (c.distanceTo(692, 1448) <= 5) {
       c.atObject(SceneryId.WATCH_TOWER_GNOME_COURSE_1ST_F);
       c.sleepUntilGainedXp();
+      c.sleep(680);
     } else if (c.distanceTo(693, 2394) <= 3) {
       c.atObject(SceneryId.ROPESWING_GNOME_COURSE);
       c.sleepUntilGainedXp();
