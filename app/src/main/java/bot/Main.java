@@ -387,8 +387,8 @@ public class Main {
     logWindowCheckbox.setSelected(config.isLogWindowVisible());
     sidebarCheckbox.setSelected(config.isSidebarVisible());
     debugCheckbox.setSelected(config.isDebug());
-    botPaintCheckbox.setSelected(config.isBotPaintVisible());
     interlaceCheckbox.setSelected(config.isGraphicsInterlacingEnabled());
+    botPaintCheckbox.setSelected(config.isBotPaintVisible());
 
     if (config.isGraphicsInterlacingEnabled()) {
       controller.setInterlacer(config.isGraphicsInterlacingEnabled());
@@ -401,7 +401,7 @@ public class Main {
     autoLoginCheckbox.setSelected(config.isAutoLogin());
     graphicsCheckbox.setSelected(config.isGraphicsEnabled());
     gfxCheckbox.setSelected(config.isGraphicsEnabled());
-    controller.setDrawing(config.isGraphicsEnabled());
+    controller.setDrawing(config.isGraphicsEnabled(), 0);
 
     log("Initializing WindowListener...");
     windowListener =
@@ -426,7 +426,7 @@ public class Main {
     // give everything a nice synchronization break juuuuuuuuuuuuuust in case...
     Thread.sleep(1000);
 
-    controller.login();
+    if (autoLoginCheckbox.isSelected()) controller.login();
     // start up our listener threads
     log("Initializing LoginListener...");
     loginListener = new Thread(new LoginListener(controller));
@@ -434,7 +434,6 @@ public class Main {
     log("LoginListener initialized.");
 
     Thread.sleep(1200);
-
     if (config.getScriptName() != null && !config.getScriptName().isEmpty()) {
       if (!loadAndRunScript(config.getScriptName())) {
         System.out.println("Could not find script: " + config.getScriptName());
@@ -499,8 +498,10 @@ public class Main {
             Thread.sleep(10);
           }
         }
-
       } else {
+        if (controller.getNeedToMove() && controller.isLoggedIn() && controller.isAutoLogin()) {
+          controller.moveCharacter();
+        }
         aposInitCalled = false;
         Thread.sleep(100);
       }
@@ -622,7 +623,7 @@ public class Main {
         e -> {
           if (controller != null) {
             graphicsCheckbox.setSelected(gfxCheckbox.isSelected());
-            controller.setDrawing(gfxCheckbox.isSelected());
+            controller.setDrawing(gfxCheckbox.isSelected(), 0);
             if (gfxCheckbox.isSelected()) {
               DrawCallback.setNextRefresh(-1);
             } else if (gfxCheckbox.isSelected() && config.getScreenRefresh()) {
@@ -728,7 +729,7 @@ public class Main {
         e -> {
           if (controller != null) {
             gfxCheckbox.setSelected(graphicsCheckbox.isSelected());
-            controller.setDrawing(graphicsCheckbox.isSelected());
+            controller.setDrawing(graphicsCheckbox.isSelected(), 0);
             if (graphicsCheckbox.isSelected()) {
               DrawCallback.setNextRefresh(-1);
             } else if (graphicsCheckbox.isSelected() && config.getScreenRefresh()) {
@@ -1308,10 +1309,10 @@ public class Main {
   /**
    * A function for controlling whether or not scripts are running.
    *
-   * @param b
+   * @param _isRunning
    */
-  public static void setRunning(boolean b) {
-    isRunning = b;
+  public static void setRunning(boolean _isRunning) {
+    isRunning = _isRunning;
     if (isRunning) {
       startStopButton.setText("Stop");
     } else {

@@ -33,7 +33,7 @@ public class Cow {
     else if (inCabbageField() && c.getInventoryItemCount() <= 20) pickCabbage();
     else if (Combat_Utils.needToEat() && !Combat_Utils.hasFood()) goToCabbages();
     else if (Combat_Utils.needToEat()) Combat_Utils.runAndEat();
-    else if (c.isInCombat()) c.sleepUntilGainedXp();
+    else if (c.isInCombat()) c.sleepUntil(() -> !c.isInCombat());
     else if (c.getNearestNpcById(NpcId.COW_ATTACKABLE.getId(), false) == null) findCows();
     // The NPC we want to bop is found at this point
     else if (c.getInventoryItemCount() < 30

@@ -42,14 +42,12 @@ public class GnomeVillage {
   }
 
   private static boolean isInsideGnomeAgilityArena() {
-    return c.getNearestReachableObjectById(SceneryId.LOG_GNOME_COURSE.getId(), true) != null
-        || c.getNearestReachableObjectById(SceneryId.NET_GNOME_COURSE_START.getId(), true) != null
+
+    return c.currentX() > 695 && c.currentY() > 494 && c.currentX() <= 681 && c.currentY() <= 510
         || c.getNearestReachableObjectById(SceneryId.WATCH_TOWER_GNOME_COURSE_1ST_F.getId(), true)
             != null
         || c.getNearestReachableObjectById(SceneryId.ROPESWING_GNOME_COURSE.getId(), true) != null
         || c.getNearestReachableObjectById(SceneryId.WATCH_TOWER_GNOME_COURSE_2ND_F.getId(), true)
-            != null
-        || c.getNearestReachableObjectById(SceneryId.NET_GNOME_COURSE_END.getId(), true) != null
-        || c.getNearestReachableObjectById(SceneryId.PIPE_GNOME_COURSE.getId(), true) != null;
+            != null;
   }
 }

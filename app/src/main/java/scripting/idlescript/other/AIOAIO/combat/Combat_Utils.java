@@ -129,11 +129,11 @@ public class Combat_Utils {
    * @param npcId
    */
   public static void attackNpc(NpcId npcId) {
-    Main.getController().setStatus("@yel@Attacking " + npcId.name());
+    Main.getController().setStatus("@yel@Bopping " + npcId.name());
     ORSCharacter npc = Main.getController().getNearestNpcById(npcId.getId(), false);
     if (npc == null) return;
     Main.getController().attackNpc(npc.serverIndex);
-    Main.getController().sleepUntil(() -> Main.getController().isNpcInCombat(npc.serverIndex));
+    Main.getController().sleepUntil(() -> Main.getController().isInCombat(), 5000);
   }
 
   public static void buryBones() {
