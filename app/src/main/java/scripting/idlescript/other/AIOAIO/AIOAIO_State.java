@@ -9,7 +9,7 @@ public class AIOAIO_State {
   // --- Global Management State --- \\
   public AIOAIO_Skill currentSkill;
 
-  public AIOAIO_Method currentMethod;
+  public AIOAIO_Task currentMethod;
   public AIOAIOConfig botConfig = new AIOAIOConfig();
   public boolean guiSetup = false;
   public boolean startPressed = false;

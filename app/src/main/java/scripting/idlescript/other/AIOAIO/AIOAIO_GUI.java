@@ -58,7 +58,7 @@ public class AIOAIO_GUI {
     AIOAIO_Skill selectedSkill = skillList.getSelectedValue();
     if (selectedSkill == null) return;
 
-    for (AIOAIO_Method method : selectedSkill.getMethods()) {
+    for (AIOAIO_Task method : selectedSkill.getMethods()) {
       JCheckBox checkBox = new JCheckBox(method.getName(), method.isEnabled());
       checkBox.addActionListener(e -> method.setEnabled(checkBox.isSelected()));
       methodsPanel.add(checkBox);

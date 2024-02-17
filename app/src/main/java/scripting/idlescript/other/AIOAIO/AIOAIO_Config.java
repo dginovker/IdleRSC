@@ -18,41 +18,41 @@ class AIOAIOConfig {
             "Woodcutting",
             true,
             Arrays.asList(
-                new AIOAIO_Method("normal", true, Woodcut::run),
-                new AIOAIO_Method("oak", true, Woodcut::run),
-                new AIOAIO_Method("willow", true, Woodcut::run))));
+                new AIOAIO_Task("normal", true, Woodcut::run),
+                new AIOAIO_Task("oak", true, Woodcut::run),
+                new AIOAIO_Task("willow", true, Woodcut::run))));
     skills.add(
         new AIOAIO_Skill(
             "Fishing",
             true,
-            Collections.singletonList(new AIOAIO_Method("Shrimp", true, Fish::run))));
+            Collections.singletonList(new AIOAIO_Task("Shrimp", true, Fish::run))));
     skills.add(
         new AIOAIO_Skill(
             "Agility",
             true,
             Collections.singletonList(
-                new AIOAIO_Method("Tree Gnome Village", true, GnomeVillage::run))));
+                new AIOAIO_Task("Tree Gnome Village", true, GnomeVillage::run))));
     skills.add(
         new AIOAIO_Skill(
             "Strength",
             true,
             Arrays.asList(
-                new AIOAIO_Method("Lummy Cows", true, Cow::attack),
-                new AIOAIO_Method("Draynor Jailguard", true, JailGuard::attack))));
+                new AIOAIO_Task("Lummy Cows", true, Cow::attack),
+                new AIOAIO_Task("Draynor Jailguard", true, JailGuard::attack))));
     skills.add(
         new AIOAIO_Skill(
             "Defense",
             true,
             Arrays.asList(
-                new AIOAIO_Method("Lummy Cows", true, Cow::attack),
-                new AIOAIO_Method("Draynor Jailguard", true, JailGuard::attack))));
+                new AIOAIO_Task("Lummy Cows", true, Cow::attack),
+                new AIOAIO_Task("Draynor Jailguard", true, JailGuard::attack))));
     skills.add(
         new AIOAIO_Skill(
             "Attack",
             true,
             Arrays.asList(
-                new AIOAIO_Method("Lummy Cows", true, Cow::attack),
-                new AIOAIO_Method("Draynor Jailguard", true, JailGuard::attack))));
+                new AIOAIO_Task("Lummy Cows", true, Cow::attack),
+                new AIOAIO_Task("Draynor Jailguard", true, JailGuard::attack))));
   }
 
   public AIOAIO_Skill getRandomEnabledSkill() {

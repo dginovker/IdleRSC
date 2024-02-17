@@ -7,9 +7,9 @@ import java.util.stream.Collectors;
 class AIOAIO_Skill {
   private String name;
   private boolean enabled;
-  private List<AIOAIO_Method> methods;
+  private List<AIOAIO_Task> methods;
 
-  public AIOAIO_Skill(String name, boolean enabled, List<AIOAIO_Method> methods) {
+  public AIOAIO_Skill(String name, boolean enabled, List<AIOAIO_Task> methods) {
     this.name = name;
     this.enabled = enabled;
     this.methods = methods;
@@ -27,17 +27,17 @@ class AIOAIO_Skill {
     this.enabled = enabled;
   }
 
-  public List<AIOAIO_Method> getMethods() {
+  public List<AIOAIO_Task> getMethods() {
     return methods;
   }
 
-  public void setMethods(List<AIOAIO_Method> methods) {
+  public void setMethods(List<AIOAIO_Task> methods) {
     this.methods = methods;
   }
 
-  public AIOAIO_Method getRandomEnabledMethod() {
-    List<AIOAIO_Method> enabledMethods =
-        methods.stream().filter(AIOAIO_Method::isEnabled).collect(Collectors.toList());
+  public AIOAIO_Task getRandomEnabledMethod() {
+    List<AIOAIO_Task> enabledMethods =
+        methods.stream().filter(AIOAIO_Task::isEnabled).collect(Collectors.toList());
     int index = ThreadLocalRandom.current().nextInt(enabledMethods.size());
     return enabledMethods.get(index);
   }
