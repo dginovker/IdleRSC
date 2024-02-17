@@ -25,7 +25,7 @@ public class AIOAIO_Task {
     this.enabled = enabled;
   }
 
-  public int performAction() {
-    return action.get();
+  public Supplier<Integer> getAction() {
+    return action;
   }
 }

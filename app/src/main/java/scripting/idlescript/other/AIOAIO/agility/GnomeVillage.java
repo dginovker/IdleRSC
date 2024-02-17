@@ -12,8 +12,10 @@ public class GnomeVillage {
     c.setBatchBarsOn();
     System.out.println("Gnome Village run");
 
-    if (!isInsideGnomeAgilityArena()) c.walkTowards(692, 494);
-    else if (c.distanceTo(692, 499) <= 3) {
+    if (!isInsideGnomeAgilityArena()) {
+      c.setStatus("Walking to Gnome Agility Arena");
+      c.walkTowards(692, 494);
+    } else if (c.distanceTo(692, 499) <= 3) {
       c.atObject(SceneryId.NET_GNOME_COURSE_START);
       c.sleepUntilGainedXp();
     } else if (c.distanceTo(692, 1448) <= 3) {
@@ -43,7 +45,7 @@ public class GnomeVillage {
 
   private static boolean isInsideGnomeAgilityArena() {
 
-    return c.currentX() > 695 && c.currentY() > 494 && c.currentX() <= 681 && c.currentY() <= 510
+    return c.currentX() >= 681 && c.currentY() >= 492 && c.currentX() < 695 && c.currentY() <= 510
         || c.getNearestReachableObjectById(SceneryId.WATCH_TOWER_GNOME_COURSE_1ST_F.getId(), true)
             != null
         || c.getNearestReachableObjectById(SceneryId.ROPESWING_GNOME_COURSE.getId(), true) != null

@@ -7,12 +7,12 @@ import java.util.stream.Collectors;
 class AIOAIO_Skill {
   private String name;
   private boolean enabled;
-  private List<AIOAIO_Task> methods;
+  private List<AIOAIO_Task> tasks;
 
-  public AIOAIO_Skill(String name, boolean enabled, List<AIOAIO_Task> methods) {
+  public AIOAIO_Skill(String name, boolean enabled, List<AIOAIO_Task> tasks) {
     this.name = name;
     this.enabled = enabled;
-    this.methods = methods;
+    this.tasks = tasks;
   }
 
   public String getName() {
@@ -27,17 +27,17 @@ class AIOAIO_Skill {
     this.enabled = enabled;
   }
 
-  public List<AIOAIO_Task> getMethods() {
-    return methods;
+  public List<AIOAIO_Task> getTasks() {
+    return tasks;
   }
 
-  public void setMethods(List<AIOAIO_Task> methods) {
-    this.methods = methods;
+  public void setTasks(List<AIOAIO_Task> methods) {
+    this.tasks = methods;
   }
 
   public AIOAIO_Task getRandomEnabledMethod() {
     List<AIOAIO_Task> enabledMethods =
-        methods.stream().filter(AIOAIO_Task::isEnabled).collect(Collectors.toList());
+        tasks.stream().filter(AIOAIO_Task::isEnabled).collect(Collectors.toList());
     int index = ThreadLocalRandom.current().nextInt(enabledMethods.size());
     return enabledMethods.get(index);
   }

@@ -1,5 +1,6 @@
 package scripting.idlescript.other.AIOAIO;
 
+import bot.Main;
 import java.awt.*;
 import javax.swing.*;
 
@@ -11,7 +12,7 @@ public class AIOAIO_GUI {
   static JButton startButton, enableDisableSkillButton;
 
   public static void setupGUI() {
-    scriptFrame = new JFrame("Runescape Classic AIO Bot");
+    scriptFrame = new JFrame("Runescape Classic AIO Bot v" + AIOAIO.VERSION);
     scriptFrame.setLayout(new BorderLayout());
     skillListModel = new DefaultListModel<>();
     AIOAIO.state.botConfig.skills.forEach(skillListModel::addElement);
@@ -29,8 +30,9 @@ public class AIOAIO_GUI {
     startButton.addActionListener(
         e -> {
           scriptFrame.dispose();
+          AIOAIO.state.botConfig.saveConfig();
           AIOAIO.state.startPressed = true;
-          System.out.println("Bot starting with the current configuration...");
+          Main.getController().log("AIO AIO starting!");
         });
     JPanel skillsPanel = createSectionWithTitle("Skills", new JScrollPane(skillList));
     Dimension preferredSize = new Dimension(200, 100);
@@ -58,7 +60,7 @@ public class AIOAIO_GUI {
     AIOAIO_Skill selectedSkill = skillList.getSelectedValue();
     if (selectedSkill == null) return;
 
-    for (AIOAIO_Task method : selectedSkill.getMethods()) {
+    for (AIOAIO_Task method : selectedSkill.getTasks()) {
       JCheckBox checkBox = new JCheckBox(method.getName(), method.isEnabled());
       checkBox.addActionListener(e -> method.setEnabled(checkBox.isSelected()));
       methodsPanel.add(checkBox);
