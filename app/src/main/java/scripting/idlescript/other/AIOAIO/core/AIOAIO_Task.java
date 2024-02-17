@@ -1,4 +1,4 @@
-package scripting.idlescript.other.AIOAIO;
+package scripting.idlescript.other.AIOAIO.core;
 
 import java.util.function.Supplier;
 

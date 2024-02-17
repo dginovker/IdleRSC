@@ -1,4 +1,6 @@
-package scripting.idlescript.other.AIOAIO;
+package scripting.idlescript.other.AIOAIO.core;
+
+import scripting.idlescript.other.AIOAIO.core.gui.AIOAIO_Config;
 
 public class AIOAIO_State {
   /**
@@ -10,7 +12,7 @@ public class AIOAIO_State {
   public AIOAIO_Skill currentSkill;
 
   public AIOAIO_Task currentMethod;
-  public AIOAIOConfig botConfig = new AIOAIOConfig();
+  public AIOAIO_Config botConfig = new AIOAIO_Config();
   public boolean guiSetup = false;
   public boolean startPressed = false;
   public boolean methodStartup =

@@ -1,8 +1,11 @@
-package scripting.idlescript.other.AIOAIO;
+package scripting.idlescript.other.AIOAIO.core.gui;
 
 import bot.Main;
 import java.awt.*;
 import javax.swing.*;
+import scripting.idlescript.other.AIOAIO.AIOAIO;
+import scripting.idlescript.other.AIOAIO.core.AIOAIO_Skill;
+import scripting.idlescript.other.AIOAIO.core.AIOAIO_Task;
 
 public class AIOAIO_GUI {
   static JFrame scriptFrame = null;

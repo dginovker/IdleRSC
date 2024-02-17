@@ -1,10 +1,10 @@
-package scripting.idlescript.other.AIOAIO;
+package scripting.idlescript.other.AIOAIO.core;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
-class AIOAIO_Skill {
+public class AIOAIO_Skill {
   private String name;
   private boolean enabled;
   private List<AIOAIO_Task> tasks;

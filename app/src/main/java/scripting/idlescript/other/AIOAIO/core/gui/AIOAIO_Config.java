@@ -1,4 +1,4 @@
-package scripting.idlescript.other.AIOAIO;
+package scripting.idlescript.other.AIOAIO.core.gui;
 
 import bot.Main;
 import java.io.File;
@@ -17,14 +17,16 @@ import java.util.stream.Collectors;
 import scripting.idlescript.other.AIOAIO.agility.GnomeVillage;
 import scripting.idlescript.other.AIOAIO.combat.Cow;
 import scripting.idlescript.other.AIOAIO.combat.JailGuard;
+import scripting.idlescript.other.AIOAIO.core.AIOAIO_Skill;
+import scripting.idlescript.other.AIOAIO.core.AIOAIO_Task;
 import scripting.idlescript.other.AIOAIO.fishing.Fish;
 import scripting.idlescript.other.AIOAIO.woodcutting.Woodcut;
 
-class AIOAIOConfig {
+public class AIOAIO_Config {
   private static final String CONFIG_PATH = "Cache/botconfigs/aioaio.properties";
   public List<AIOAIO_Skill> skills = new ArrayList<>();
 
-  public AIOAIOConfig() {
+  public AIOAIO_Config() {
     initializeConfig();
   }
 

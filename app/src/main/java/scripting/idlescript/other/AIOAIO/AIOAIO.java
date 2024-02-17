@@ -2,6 +2,8 @@ package scripting.idlescript.other.AIOAIO;
 
 import bot.Main;
 import scripting.idlescript.IdleScript;
+import scripting.idlescript.other.AIOAIO.core.AIOAIO_State;
+import scripting.idlescript.other.AIOAIO.core.gui.AIOAIO_GUI;
 
 public class AIOAIO extends IdleScript {
   /**
@@ -18,10 +20,21 @@ public class AIOAIO extends IdleScript {
   public static AIOAIO_State state = new AIOAIO_State();
 
   /**
-   * Version guidelines - Major tick - Something large enough it affects the flow of a regular user
-   * Minor tick - New/big improvements to tasks, skills, or any refactors Patch tick - Bug fixes
+   * Version guidelines -
+   *
+   * <ol>
+   *   Major tick - Something large enough it affects the flow of a regular user
+   * </ol>
+   *
+   * <ol>
+   *   Minor tick - New/big improvements to tasks, skills, UI, or any refactors
+   * </ol>
+   *
+   * <ol>
+   *   Patch tick - Bug fixes
+   * </ol>
    */
-  public static final String VERSION = "1.2.0";
+  public static final String VERSION = "1.3.0";
 
   public int start(String[] parameters) {
     if (!state.guiSetup) {
