@@ -18,7 +18,7 @@ public class GnomeVillage {
     } else if (c.distanceTo(692, 499) <= 3) {
       c.atObject(SceneryId.NET_GNOME_COURSE_START);
       c.sleepUntilGainedXp();
-    } else if (c.distanceTo(692, 1448) <= 3) {
+    } else if (c.distanceTo(692, 1448) <= 5) {
       c.atObject(SceneryId.WATCH_TOWER_GNOME_COURSE_1ST_F);
       c.sleepUntilGainedXp();
     } else if (c.distanceTo(693, 2394) <= 3) {
