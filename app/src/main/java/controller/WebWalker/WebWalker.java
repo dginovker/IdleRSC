@@ -183,6 +183,8 @@ public class WebWalker {
       case "alkharidGate":
         return Main.getController().isQuestComplete(9)
             || Main.getController().getInventoryItemCount(ItemId.COINS.getId()) >= 10;
+      case "miningGuildDoor":
+        return Main.getController().getCurrentStat(Main.getController().getStatId("Mining")) >= 60;
       default:
         return true;
     }
@@ -210,6 +212,10 @@ public class WebWalker {
         return CustomLabelHandlers.gerrantHouseDoor();
       case "catherbyChefDoor":
         return CustomLabelHandlers.catherbyChefDoor();
+      case "dwarvenMineFaladorEntrance":
+        return CustomLabelHandlers.dwarvenMineFaladorEntrance();
+      case "dwarvenMineCannonEntrance":
+        return CustomLabelHandlers.dwarvenMineCannonEntrance();
       default:
         Main.getController().log("Missing function for label: " + label);
         return false;
