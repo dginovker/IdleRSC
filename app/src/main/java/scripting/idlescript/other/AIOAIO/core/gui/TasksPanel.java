@@ -1,6 +1,7 @@
 package scripting.idlescript.other.AIOAIO.core.gui;
 
 import java.awt.Dimension;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 import scripting.idlescript.other.AIOAIO.core.AIOAIO_Skill;
 import scripting.idlescript.other.AIOAIO.core.AIOAIO_Task;
@@ -37,26 +38,39 @@ public class TasksPanel extends JPanel {
 
     AIOAIO_Skill selectedSkill = skillList.getSelectedValue();
     if (selectedSkill != null) {
-      // Update the button text and action listener
+      // Update the button text based on the selected skill's status
       enableDisableSkillButton.setText(selectedSkill.isEnabled() ? "Disable" : "Enable");
+
+      // Remove all action listeners from the button to prevent action listener
+      // stacking
+      ActionListener[] listeners = enableDisableSkillButton.getActionListeners();
+      for (ActionListener listener : listeners) {
+        enableDisableSkillButton.removeActionListener(listener);
+      }
+
+      // Add a new action listener for the enable/disable button
       enableDisableSkillButton.addActionListener(
           e -> {
-            if (selectedSkill != null) {
-              selectedSkill.setEnabled(!selectedSkill.isEnabled());
-              skillListModel.setElementAt(selectedSkill, skillList.getSelectedIndex());
-              updatePanel(); // Recursively update the panel to reflect changes
-            }
+            // Toggle the enable state of the selected skill
+            selectedSkill.setEnabled(!selectedSkill.isEnabled());
+            // Update the model to reflect the change
+            skillListModel.setElementAt(selectedSkill, skillList.getSelectedIndex());
+            // Recursively update the panel to reflect changes
+            updatePanel();
           });
 
+      // Loop through tasks of the selected skill and add them to the panel
       for (AIOAIO_Task task : selectedSkill.getTasks()) {
         JCheckBox checkBox = new JCheckBox(task.getName(), task.isEnabled());
         checkBox.setAlignmentX(LEFT_ALIGNMENT);
         checkBox.addActionListener(
             e -> {
+              // Toggle the enable state of the task
               task.setEnabled(checkBox.isSelected());
-              updatePanel(); // Optionally update the panel if you want immediate visual feedback
+              // Optionally update the panel for immediate visual feedback
+              updatePanel();
             });
-        scrollablePanel.add(checkBox); // Add checkboxes to scrollablePanel instead
+        scrollablePanel.add(checkBox); // Add checkboxes to the scrollable panel
       }
     }
 
