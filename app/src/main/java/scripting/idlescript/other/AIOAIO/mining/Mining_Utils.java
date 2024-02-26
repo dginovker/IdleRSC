@@ -67,7 +67,9 @@ public class Mining_Utils {
       case "Gold ore":
         Main.getController().log(AIOAIO.state.currentTask.getName() + " is not yet implemented!");
         return false;
-        // return Main.getController().getCurrentStat(Main.getController().getStatId("Mining")) >=
+        // return
+        // Main.getController().getCurrentStat(Main.getController().getStatId("Mining"))
+        // >=
         // 40;
       case "Gem":
         Main.getController()
@@ -78,66 +80,70 @@ public class Mining_Utils {
       case "Adamantite ore":
         Main.getController().log(AIOAIO.state.currentTask.getName() + " is not yet implemented!");
         return false;
-        // return Main.getController().getCurrentStat(Main.getController().getStatId("Mining")) >=
+        // return
+        // Main.getController().getCurrentStat(Main.getController().getStatId("Mining"))
+        // >=
         // 70;
       case "Runite ore":
         Main.getController().log(AIOAIO.state.currentTask.getName() + " is not yet implemented!");
         return false;
-        // return Main.getController().getCurrentStat(Main.getController().getStatId("Mining")) >=
+        // return
+        // Main.getController().getCurrentStat(Main.getController().getStatId("Mining"))
+        // >=
         // 85;
     }
     throw new IllegalStateException("Unknown rock type: " + AIOAIO.state.currentTask.getName());
   }
 
-  public static int getRockId() {
+  public static int[] getRockIds() {
     switch (AIOAIO.state.currentTask.getName()) {
       case "Clay":
-        return SceneryId.ROCK_CLAY.getId(); // TODO - VERIFY??
+        return new int[] {SceneryId.ROCK_CLAY.getId(), SceneryId.ROCK_CLAY2.getId()};
       case "Copper ore":
-        return SceneryId.ROCK_COPPER.getId(); // TODDO - VERIFY??
+        return new int[] {SceneryId.ROCK_COPPER.getId(), SceneryId.ROCK_COPPER2.getId()};
       case "Tin ore":
-        return SceneryId.ROCK_TIN.getId(); // TODO - VERIFY??
+        return new int[] {SceneryId.ROCK_TIN.getId(), SceneryId.ROCK_TIN2.getId()};
       case "Iron ore":
-        return SceneryId.ROCK_IRON.getId(); // You get the idea
+        return new int[] {SceneryId.ROCK_IRON.getId(), SceneryId.ROCK_IRON2.getId()};
       case "Silver ore":
-        return SceneryId.ROCK_SILVER.getId();
+        return new int[] {SceneryId.ROCK_SILVER.getId(), SceneryId.ROCK_SILVER2.getId()};
       case "Coal ore":
-        return SceneryId.ROCK_COAL.getId();
+        return new int[] {SceneryId.ROCK_COAL.getId(), SceneryId.ROCK_COAL2.getId()};
       case "Gold ore":
-        return SceneryId.ROCK_GOLD.getId();
+        return new int[] {SceneryId.ROCK_GOLD.getId(), SceneryId.ROCK_GOLD2.getId()};
       case "Gem":
-        return SceneryId.GEM_ROCKS.getId();
+        return new int[] {SceneryId.GEM_ROCKS.getId()};
       case "Mithril ore":
-        return SceneryId.ROCK_MITHRIL.getId();
+        return new int[] {SceneryId.ROCK_MITHRIL.getId(), SceneryId.ROCK_MITHRIL2.getId()};
       case "Adamantite ore":
-        return SceneryId.ROCK_ADAMITE.getId();
+        return new int[] {SceneryId.ROCK_ADAMITE.getId(), SceneryId.ROCK_ADAMITE2.getId()};
       case "Runite ore":
-        return SceneryId.ROCK_RUNITE.getId();
+        return new int[] {SceneryId.ROCK_RUNITE.getId(), SceneryId.ROCK_RUNITE2.getId()};
     }
     throw new IllegalStateException("Unknown rock type: " + AIOAIO.state.currentTask.getName());
   }
 
-  public static void findRocks() {
+  public static boolean findRocks() {
     // If lots of people use this script, add more locs and a Random
     switch (AIOAIO.state.currentTask.getName()) {
       case "Clay":
-        Main.getController().walkTowards(160, 543); // Varrock Southwest Mine
+        return Main.getController().walkTowards(160, 543); // Varrock Southwest Mine
       case "Copper ore":
-        Main.getController().walkTowards(73, 546); // Varrock Southeast Mine
+        return Main.getController().walkTowards(73, 546); // Varrock Southeast Mine
       case "Tin ore":
-        Main.getController().walkTowards(160, 543); // Varrock Southwest Mine
+        return Main.getController().walkTowards(160, 543); // Varrock Southwest Mine
       case "Iron ore":
-        Main.getController().walkTowards(160, 543); // Varrock Southwest Mine
+        return Main.getController().walkTowards(160, 543); // Varrock Southwest Mine
       case "Silver ore":
-        Main.getController().walkTowards(160, 543); // Varrock Southwest Mine
+        return Main.getController().walkTowards(160, 543); // Varrock Southwest Mine
       case "Coal ore":
         // if mining level then ...
-        Main.getController().walkTowards(228, 515); // Barbarian Village
+        return Main.getController().walkTowards(228, 515); // Barbarian Village
         // Gold is skipped, we want to do Tree Gnome Stronghold mine tho
       case "Gem":
-        Main.getController().walkTowards(424, 825); // Shilo
+        return Main.getController().walkTowards(424, 825); // Shilo
       case "Mithril ore":
-        Main.getController().walkTowards(116, 711); // Lumbridge Swamp Mine
+        return Main.getController().walkTowards(116, 711); // Lumbridge Swamp Mine
         // Adamantite is skipped, we want to do Tree Gnome Stronghold mine tho
         // Runite is skipped, we wanna have logic for banking our stuff first
     }

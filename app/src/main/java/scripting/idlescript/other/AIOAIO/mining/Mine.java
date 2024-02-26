@@ -25,15 +25,15 @@ public class Mine {
     else if (c.getInventoryItemCount() >= 30)
       AIOAIO_Script_Utils.towardsDepositAll(Mining_Utils.getBestPick());
     else if (c.isBatching()) return 250; // Wait to finish mining
-    else if (c.getNearestReachableObjectById(Mining_Utils.getRockId(), true) != null)
+    else if (c.getNearestReachableObjectByIds(Mining_Utils.getRockIds(), true) != null)
       return mineRock();
     else Mining_Utils.findRocks();
     return 50;
   }
 
   private static int mineRock() {
-    c.setStatus("Mining rock tree");
-    int[] rockCoords = c.getNearestReachableObjectById(Mining_Utils.getRockId(), true);
+    c.setStatus("Mining rock");
+    int[] rockCoords = c.getNearestReachableObjectByIds(Mining_Utils.getRockIds(), true);
     c.atObject(rockCoords[0], rockCoords[1]);
     return 1200;
   }

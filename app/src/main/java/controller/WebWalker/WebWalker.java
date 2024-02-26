@@ -93,7 +93,6 @@ public class WebWalker {
     }
     Main.getController()
         .log(
-            "webwalkTowards",
             "Path calculated in "
                 + (System.currentTimeMillis() - startTime)
                 + "ms: "
