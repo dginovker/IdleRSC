@@ -1,7 +1,5 @@
 package controller.WebWalker;
 
-import com.openrsc.client.entityhandling.EntityHandler.PROJECTILE_TYPES;
-
 import bot.Main;
 import models.entities.NpcId;
 import orsc.ORSCharacter;
@@ -11,11 +9,14 @@ public class CustomLabelHandlers {
     // Only even gets considered if we have 10gp or quest is complete, so we don't
     // have to handle walking around case manually
     boolean entering = Main.getController().currentX() >= 92;
-    ORSCharacter npc = Main.getController()
-        .getNearestNPCByLambda(
-            n -> n.npcId == (entering
-                ? NpcId.BORDER_GUARD_LUMBRIDGE.getId()
-                : NpcId.BORDER_GUARD_ALKHARID.getId()));
+    ORSCharacter npc =
+        Main.getController()
+            .getNearestNPCByLambda(
+                n ->
+                    n.npcId
+                        == (entering
+                            ? NpcId.BORDER_GUARD_LUMBRIDGE.getId()
+                            : NpcId.BORDER_GUARD_ALKHARID.getId()));
 
     Main.getController().talkToNpc(npc.serverIndex);
     Main.getController().sleep(6000);
@@ -24,9 +25,10 @@ public class CustomLabelHandlers {
     }
     Main.getController()
         .sleepUntil(
-            () -> entering
-                ? Main.getController().currentX() < 92
-                : Main.getController().currentX() >= 92,
+            () ->
+                entering
+                    ? Main.getController().currentX() < 92
+                    : Main.getController().currentX() >= 92,
             15000);
 
     return entering ? Main.getController().currentX() < 92 : Main.getController().currentX() >= 92;
@@ -80,9 +82,10 @@ public class CustomLabelHandlers {
     Main.getController().atObject(343, 581);
     Main.getController()
         .sleepUntil(
-            () -> goingNorth
-                ? Main.getController().currentY() < 580
-                : Main.getController().currentY() >= 581,
+            () ->
+                goingNorth
+                    ? Main.getController().currentY() < 580
+                    : Main.getController().currentY() >= 581,
             10000);
     Main.getController().sleep(680);
     return goingNorth
@@ -95,9 +98,10 @@ public class CustomLabelHandlers {
     Main.getController().atObject(137);
     Main.getController()
         .sleepUntil(
-            () -> goingEast
-                ? Main.getController().currentX() < 342
-                : Main.getController().currentX() >= 342,
+            () ->
+                goingEast
+                    ? Main.getController().currentX() < 342
+                    : Main.getController().currentX() >= 342,
             10000);
     Main.getController().sleep(680);
     return goingEast

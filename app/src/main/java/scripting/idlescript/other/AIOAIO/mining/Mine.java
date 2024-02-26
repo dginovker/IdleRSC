@@ -27,23 +27,8 @@ public class Mine {
     else if (c.isBatching()) return 250; // Wait to finish mining
     else if (c.getNearestReachableObjectById(Mining_Utils.getRockId(), true) != null)
       return mineRock();
-    else return findRocks();
-    return 250;
-  }
-
-  private static int findRocks() {
-    switch (AIOAIO.state.currentTask.getName()) {
-      case "normal":
-      case "oak":
-        c.setStatus("Walking to Seers");
-        c.walkTowards(500, 453);
-        return 50;
-      case "willow":
-        c.setStatus("Walking to Seers");
-        c.walkTowards(509, 442);
-        return 50;
-    }
-    throw new IllegalStateException("Unknown tree type: " + AIOAIO.state.currentTask.getName());
+    else Mining_Utils.findRocks();
+    return 50;
   }
 
   private static int mineRock() {
@@ -79,9 +64,20 @@ public class Mine {
   }
 
   private static int buyPickFromDwarvenMines() {
+    if (c.getInventoryItemCount(ItemId.COINS.getId()) < Mining_Utils.getPickCost()) {
+      if (!AIOAIO_Script_Utils.towardsGetFromBank(ItemId.COINS, Mining_Utils.getPickCost())) {
+        Main.getController()
+            .log(
+                "Too poor to buy "
+                    + ItemId.getById(Mining_Utils.getBestPick()).name()
+                    + ".. Skipping task");
+        AIOAIO.state.endTime = System.currentTimeMillis();
+      }
+      return 50;
+    }
     if (c.isInBank()) c.closeBank();
     if (c.isInShop()) {
-      c.log("Buying " + ItemId.getById(Mining_Utils.getBestPick()).name());
+      c.setStatus("Buying " + ItemId.getById(Mining_Utils.getBestPick()).name());
       c.shopBuy(Mining_Utils.getBestPick());
       c.closeShop();
       c.sleep(1200);
@@ -91,11 +87,12 @@ public class Mine {
         c.log("Failed to get " + ItemId.getById(Mining_Utils.getBestPick()).name());
       }
       return 50;
-    }
-    if (c.distanceTo(0, 0) < 5) {
+    } else if (c.distanceTo(293, 3329) < 5) {
+      c.setStatus("Opening Nurmof shop");
       c.openShop(new int[] {NpcId.NURMOF.getId()});
+    } else {
+      c.walkTowards(293, 3329);
     }
-    c.walkTowards(0, 0);
     return 0;
   }
 }
