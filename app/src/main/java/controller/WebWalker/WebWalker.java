@@ -219,6 +219,14 @@ public class WebWalker {
         return CustomLabelHandlers.digsiteGate();
       case "gnomeTreeGate":
         return CustomLabelHandlers.gnomeTreeGate();
+      case "gnomeAgilityClimbFirstNet":
+        return CustomLabelHandlers.gnomeAgilityClimbFirstNet();
+      case "gnomeAgilityClimbTower":
+        return CustomLabelHandlers.gnomeAgilityClimbTower();
+      case "gnomeAgilityRopeSwing":
+        return CustomLabelHandlers.gnomeAgilityRopeSwing();
+      case "gnomeAgilityClimbDownTower":
+        return CustomLabelHandlers.gnomeAgilityClimbDownTower();
       default:
         Main.getController().log("Missing function for label: " + label);
         return false;

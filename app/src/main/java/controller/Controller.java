@@ -2371,7 +2371,7 @@ public class Controller {
    * Retrieves the text of the specified option index when talking to an NPC or performing an
    * action.
    *
-   * @param i int
+   * @param i zero-indexed option (i.e first option is 0, second option is 1, etc..)
    * @return String -- null if option does not exist, or if quest menu is not up.
    */
   public String getOptionsMenuText(int i) {

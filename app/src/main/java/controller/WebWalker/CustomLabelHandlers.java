@@ -2,6 +2,7 @@ package controller.WebWalker;
 
 import bot.Main;
 import models.entities.NpcId;
+import models.entities.SceneryId;
 import orsc.ORSCharacter;
 
 public class CustomLabelHandlers {
@@ -253,5 +254,38 @@ public class CustomLabelHandlers {
     return goingNorth
         ? Main.getController().currentY() <= 531
         : Main.getController().currentY() >= 532;
+  }
+
+  public static boolean gnomeAgilityClimbFirstNet() {
+    // Only have to worry about one-way because the path weights are setup such that
+    // it's always easier to continue down the course than to try and go back
+    Main.getController().atObject(SceneryId.NET_GNOME_COURSE_START);
+    Main.getController().sleepUntilGainedXp();
+    Main.getController().sleep(680);
+    return true;
+  }
+
+  public static boolean gnomeAgilityClimbTower() {
+    Main.getController().atObject(SceneryId.WATCH_TOWER_GNOME_COURSE_1ST_F);
+    Main.getController()
+        .sleepUntil(
+            () -> Main.getController().currentX() == 693 && Main.getController().currentY() == 2394,
+            2000);
+    Main.getController().sleep(680);
+    return true;
+  }
+
+  public static boolean gnomeAgilityRopeSwing() {
+    Main.getController().atObject(SceneryId.ROPESWING_GNOME_COURSE);
+    Main.getController().sleepUntilGainedXp();
+    Main.getController().sleep(680);
+    return true;
+  }
+
+  public static boolean gnomeAgilityClimbDownTower() {
+    Main.getController().atObject(SceneryId.WATCH_TOWER_GNOME_COURSE_2ND_F);
+    Main.getController().sleepUntilGainedXp();
+    Main.getController().sleep(680);
+    return true;
   }
 }
