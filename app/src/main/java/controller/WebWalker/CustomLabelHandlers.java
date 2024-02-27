@@ -217,4 +217,17 @@ public class CustomLabelHandlers {
         ? Main.getController().currentY() >= 600
         : Main.getController().currentY() <= 600;
   }
+
+  public static boolean digsiteGate() {
+    boolean goingEast = Main.getController().currentX() >= 59;
+    Main.getController().atObject(59, 573);
+    Main.getController()
+        .sleepUntil(
+            () ->
+                goingEast
+                    ? Main.getController().currentX() < 59
+                    : Main.getController().currentX() >= 59,
+            8000);
+    return goingEast ? Main.getController().currentX() < 59 : Main.getController().currentX() >= 59;
+  }
 }
