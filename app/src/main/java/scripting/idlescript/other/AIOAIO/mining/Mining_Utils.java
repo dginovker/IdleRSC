@@ -2,6 +2,7 @@ package scripting.idlescript.other.AIOAIO.mining;
 
 import bot.Main;
 import models.entities.ItemId;
+import models.entities.QuestId;
 import models.entities.SceneryId;
 import scripting.idlescript.other.AIOAIO.AIOAIO;
 
@@ -72,9 +73,8 @@ public class Mining_Utils {
         // >=
         // 40;
       case "Gem":
-        Main.getController()
-            .log("TODO - Check if Shilo village is complete.. (steal the check from AIO Quester?)");
-        return Main.getController().getCurrentStat(Main.getController().getStatId("Mining")) >= 40;
+        return Main.getController().isQuestComplete(QuestId.SHILO_VILLAGE.getId())
+            && Main.getController().getCurrentStat(Main.getController().getStatId("Mining")) >= 40;
       case "Mithril ore":
         return Main.getController().getCurrentStat(Main.getController().getStatId("Mining")) >= 55;
       case "Adamantite ore":

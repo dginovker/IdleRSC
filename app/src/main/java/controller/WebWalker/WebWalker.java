@@ -217,6 +217,8 @@ public class WebWalker {
         return CustomLabelHandlers.dwarvenMineCannonEntrance();
       case "digsiteGate":
         return CustomLabelHandlers.digsiteGate();
+      case "gnomeTreeGate":
+        return CustomLabelHandlers.gnomeTreeGate();
       default:
         Main.getController().log("Missing function for label: " + label);
         return false;

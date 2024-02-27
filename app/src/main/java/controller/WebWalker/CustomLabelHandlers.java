@@ -230,4 +230,28 @@ public class CustomLabelHandlers {
             8000);
     return goingEast ? Main.getController().currentX() < 59 : Main.getController().currentX() >= 59;
   }
+
+  public static boolean gnomeTreeGate() {
+    boolean goingNorth = Main.getController().currentY() >= 532;
+    Main.getController().atObject(703, 531);
+    Main.getController()
+        .sleepUntil(
+            () ->
+                goingNorth
+                    ? Main.getController().currentY() <= 531
+                    : Main.getController().currentY() >= 532
+                        || Main.getController().isInOptionMenu(),
+            12000);
+    if (Main.getController().isInOptionMenu()) {
+      Main.getController().log("Handling first time entrance to Gnome Tree...");
+      Main.getController()
+          .sleepUntil(() -> Main.getController().getOptionsMenuText(1).contains("ok then"), 12000);
+      Main.getController().optionAnswer(1);
+      Main.getController().atObject(703, 531);
+      Main.getController().sleepUntil(() -> Main.getController().currentY() <= 531, 12000);
+    }
+    return goingNorth
+        ? Main.getController().currentY() <= 531
+        : Main.getController().currentY() >= 532;
+  }
 }
