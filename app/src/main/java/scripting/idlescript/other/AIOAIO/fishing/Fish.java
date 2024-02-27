@@ -101,12 +101,12 @@ public class Fish {
   }
 
   private static int getToolFromBank() {
-    if (!AIOAIO_Script_Utils.towardsGetFromBank(fishTool(), 1)) {
+    if (!AIOAIO_Script_Utils.towardsGetFromBank(fishTool(), 1, true)) {
       needBuyTool = true;
     }
 
     if (AIOAIO.state.currentTask.getName() == "Salmon") {
-      if (!AIOAIO_Script_Utils.towardsGetFromBank(ItemId.FEATHER, -1)) {
+      if (!AIOAIO_Script_Utils.towardsGetFromBank(ItemId.FEATHER, -1, false)) {
         needBuyTool = true;
       }
     }
@@ -114,7 +114,7 @@ public class Fish {
   }
 
   private static int getCoinsFromBank() {
-    if (!AIOAIO_Script_Utils.towardsGetFromBank(ItemId.COINS, 1405)) {
+    if (!AIOAIO_Script_Utils.towardsGetFromBank(ItemId.COINS, 1405, true)) {
       Main.getController().log("Legit too poor to fish.. Skipping task");
       AIOAIO.state.endTime = System.currentTimeMillis();
     }
