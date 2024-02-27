@@ -17,8 +17,9 @@ public class AIOAIO_Script_Utils {
    * @param amount -1 if withdraw all but 1
    * @return
    */
-  public static boolean towardsGetFromBank(ItemId item, int amount) {
+  public static boolean towardsGetFromBank(ItemId item, int amount, boolean depositEverythingElse) {
     if (Main.getController().isInBank()) {
+      if (depositEverythingElse) Main.getController().depositAll();
       if (amount == -1) amount = Main.getController().getBankItemCount(item.getId());
       if (Main.getController().getBankItemCount(item.getId()) < amount) {
         Main.getController()

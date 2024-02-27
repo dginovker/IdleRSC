@@ -59,7 +59,8 @@ public class Fletch {
         .forEach(
             item -> {
               if (c.getInventoryItemCount(item[0]) >= item[1]) return;
-              if (!AIOAIO_Script_Utils.towardsGetFromBank(ItemId.getById(item[0]), item[1])) {
+              if (!AIOAIO_Script_Utils.towardsGetFromBank(
+                  ItemId.getById(item[0]), item[1], false)) {
                 if (item[0] == ItemId.KNIFE.getId()) {
                   needsToGetKnife = true;
                   return;

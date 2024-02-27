@@ -67,7 +67,7 @@ public class Mine {
 
   private static int buyPickFromDwarvenMines() {
     if (c.getInventoryItemCount(ItemId.COINS.getId()) < Mining_Utils.getPickCost()) {
-      if (!AIOAIO_Script_Utils.towardsGetFromBank(ItemId.COINS, Mining_Utils.getPickCost())) {
+      if (!AIOAIO_Script_Utils.towardsGetFromBank(ItemId.COINS, Mining_Utils.getPickCost(), true)) {
         Main.getController()
             .log(
                 "Too poor to buy "
