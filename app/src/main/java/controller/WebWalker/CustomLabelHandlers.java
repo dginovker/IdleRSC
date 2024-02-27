@@ -79,7 +79,18 @@ public class CustomLabelHandlers {
 
   public static boolean southFallyTavGate() {
     boolean goingNorth = Main.getController().currentY() >= 581;
+    if (!goingNorth) {
+      // idk, it's finnicky
+      Main.getController().walkTo(343, 580);
+      Main.getController()
+          .sleepUntil(
+              () ->
+                  Main.getController().currentX() == 343 && Main.getController().currentY() == 580,
+              10000);
+    }
+    Main.getController().log("Handling South Fally Gate.. Going North? " + goingNorth);
     Main.getController().atObject(343, 581);
+    Main.getController().log("Finished clicking object at 343, 581");
     Main.getController()
         .sleepUntil(
             () ->
