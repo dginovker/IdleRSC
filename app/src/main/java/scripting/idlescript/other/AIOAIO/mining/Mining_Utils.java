@@ -98,27 +98,57 @@ public class Mining_Utils {
   public static int[] getRockIds() {
     switch (AIOAIO.state.currentTask.getName()) {
       case "Clay":
-        return new int[] {SceneryId.ROCK_CLAY.getId(), SceneryId.ROCK_CLAY2.getId()};
+        return new int[] {
+          SceneryId.ROCK_CLAY.getId(), SceneryId.ROCK_CLAY2.getId(), SceneryId.ROCKS_CLAY3.getId()
+        };
       case "Copper ore":
-        return new int[] {SceneryId.ROCK_COPPER.getId(), SceneryId.ROCK_COPPER2.getId()};
+        return new int[] {
+          SceneryId.ROCK_COPPER.getId(),
+          SceneryId.ROCK_COPPER2.getId(),
+          SceneryId.ROCKS_COPPER3.getId()
+        };
       case "Tin ore":
-        return new int[] {SceneryId.ROCK_TIN.getId(), SceneryId.ROCK_TIN2.getId()};
+        return new int[] {
+          SceneryId.ROCK_TIN.getId(), SceneryId.ROCK_TIN2.getId(), SceneryId.ROCKS_TIN3.getId()
+        };
       case "Iron ore":
-        return new int[] {SceneryId.ROCK_IRON.getId(), SceneryId.ROCK_IRON2.getId()};
+        return new int[] {
+          SceneryId.ROCK_IRON.getId(), SceneryId.ROCK_IRON2.getId(), SceneryId.ROCKS_IRON3.getId()
+        };
       case "Silver ore":
-        return new int[] {SceneryId.ROCK_SILVER.getId(), SceneryId.ROCK_SILVER2.getId()};
+        return new int[] {
+          SceneryId.ROCK_SILVER.getId(),
+          SceneryId.ROCK_SILVER2.getId(),
+          SceneryId.ROCKS_SILVER3.getId()
+        };
       case "Coal ore":
-        return new int[] {SceneryId.ROCK_COAL.getId(), SceneryId.ROCK_COAL2.getId()};
+        return new int[] {
+          SceneryId.ROCK_COAL.getId(), SceneryId.ROCK_COAL2.getId(), SceneryId.ROCKS_COAL3.getId()
+        };
       case "Gold ore":
-        return new int[] {SceneryId.ROCK_GOLD.getId(), SceneryId.ROCK_GOLD2.getId()};
+        return new int[] {
+          SceneryId.ROCK_GOLD.getId(), SceneryId.ROCK_GOLD2.getId(), SceneryId.ROCKS_GOLD3.getId()
+        };
       case "Gem":
         return new int[] {SceneryId.GEM_ROCKS.getId()};
       case "Mithril ore":
-        return new int[] {SceneryId.ROCK_MITHRIL.getId(), SceneryId.ROCK_MITHRIL2.getId()};
+        return new int[] {
+          SceneryId.ROCK_MITHRIL.getId(),
+          SceneryId.ROCK_MITHRIL2.getId(),
+          SceneryId.ROCKS_MITHRIL3.getId()
+        };
       case "Adamantite ore":
-        return new int[] {SceneryId.ROCK_ADAMITE.getId(), SceneryId.ROCK_ADAMITE2.getId()};
+        return new int[] {
+          SceneryId.ROCK_ADAMITE.getId(),
+          SceneryId.ROCK_ADAMITE2.getId(),
+          SceneryId.ROCKS_ADAMITE3.getId()
+        };
       case "Runite ore":
-        return new int[] {SceneryId.ROCK_RUNITE.getId(), SceneryId.ROCK_RUNITE2.getId()};
+        return new int[] {
+          SceneryId.ROCK_RUNITE.getId(),
+          SceneryId.ROCK_RUNITE2.getId(),
+          SceneryId.ROCKS_RUNITE3.getId()
+        };
     }
     throw new IllegalStateException("Unknown rock type: " + AIOAIO.state.currentTask.getName());
   }

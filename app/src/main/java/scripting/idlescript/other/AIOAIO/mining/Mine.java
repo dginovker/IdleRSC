@@ -35,6 +35,8 @@ public class Mine {
     c.setStatus("Mining rock");
     int[] rockCoords = c.getNearestReachableObjectByIds(Mining_Utils.getRockIds(), true);
     c.atObject(rockCoords[0], rockCoords[1]);
+    c.sleepUntilMoving(1200);
+    c.sleepUntilNotMoving(15000);
     return 1200;
   }
 
