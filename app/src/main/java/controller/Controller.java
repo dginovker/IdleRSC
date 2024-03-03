@@ -686,9 +686,9 @@ public class Controller {
       int fudgeFactor = ThreadLocalRandom.current().nextInt(-radius, radius + 1);
 
       // System.out.println(
-          // "Tryng to walk, time remaining: "
-              // + (timeout - (System.currentTimeMillis() - starttime))
-              // + " ms");
+      // "Tryng to walk, time remaining: "
+      // + (timeout - (System.currentTimeMillis() - starttime))
+      // + " ms");
       walkToActionSource(
           mud,
           mud.getLocalPlayerX(),
