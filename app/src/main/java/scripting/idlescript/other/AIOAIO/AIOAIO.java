@@ -68,10 +68,11 @@ public class AIOAIO extends IdleScript {
     String currentTaskText =
         "Current Task: " + (state.currentTask != null ? state.currentTask.getName() : "None");
     Main.getController().drawString("@red@" + currentSkillText, 6, 35, 0xFFFFFF, 1);
-    Main.getController().drawString("@red@" + currentTaskText, 6, 49, 0xFFFFFF, 1);
+    Main.getController().drawString("@red@AIOAIO status: " + state.status, 6, 49, 0xFFFFFF, 1);
+    Main.getController().drawString("@red@" + currentTaskText, 6, 63, 0xFFFFFF, 1);
     long timeRemaining = state.endTime - System.currentTimeMillis();
     String timeRemainingText =
         "Time remaining: " + (timeRemaining > 0 ? timeRemaining / 1000 + " seconds" : "None");
-    Main.getController().drawString("@red@" + timeRemainingText, 6, 63, 0xFFFFFF, 1);
+    Main.getController().drawString("@red@" + timeRemainingText, 6, 77, 0xFFFFFF, 1);
   }
 }

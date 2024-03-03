@@ -15,7 +15,7 @@ public class Get_Weapon_Utils {
    * @return true if bought the 2h, false if working on it
    */
   static boolean buySword(ItemId sword) {
-    Main.getController().setStatus("Buying " + sword.name());
+    AIOAIO.state.status = ("Buying " + sword.name());
     if (Main.getController().getInventoryItemCount(ItemId.COINS.getId()) < getCost(sword)) {
       if (!AIOAIO_Script_Utils.towardsGetFromBank(ItemId.COINS, getCost(sword), false)) {
         Main.getController().log("Too poor to buy the sword I want! Skipping task");

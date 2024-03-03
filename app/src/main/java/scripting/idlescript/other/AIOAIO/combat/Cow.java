@@ -54,12 +54,12 @@ public class Cow {
   }
 
   private static void pickCabbage() {
-    c.setStatus("Picking cabbage");
+    AIOAIO.state.status = ("Picking cabbage");
     c.pickupItem(ItemId.CABBAGE.getId());
   }
 
   private static void findCows() {
-    c.setStatus("Finding cows");
+    AIOAIO.state.status = ("Finding cows");
     c.walkTowards(99, 617);
   }
 }

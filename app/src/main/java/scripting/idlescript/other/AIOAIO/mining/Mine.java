@@ -32,7 +32,7 @@ public class Mine {
   }
 
   private static int mineRock() {
-    c.setStatus("Mining rock");
+    AIOAIO.state.status = ("Mining rock");
     int[] rockCoords = c.getNearestReachableObjectByIds(Mining_Utils.getRockIds(), true);
     c.atObject(rockCoords[0], rockCoords[1]);
     c.sleepUntilMoving(1200);
@@ -50,7 +50,7 @@ public class Mine {
       c.walkTowardsBank();
       return 100;
     }
-    c.setStatus("Opening bank");
+    AIOAIO.state.status = ("Opening bank");
     c.openBank();
     if (!Mining_Utils.hasPickInBank()) {
       System.out.println("No pick in bank, gotta get one..");
@@ -59,7 +59,7 @@ public class Mine {
       c.closeBank();
       return 100;
     }
-    c.setStatus("Withdrawing axe");
+    AIOAIO.state.status = ("Withdrawing axe");
     Mining_Utils.withdrawPickaxeFromBank();
     c.closeBank();
     return 680;
@@ -79,7 +79,7 @@ public class Mine {
     }
     if (c.isInBank()) c.closeBank();
     if (c.isInShop()) {
-      c.setStatus("Buying " + ItemId.getById(Mining_Utils.getBestPick()).name());
+      AIOAIO.state.status = ("Buying " + ItemId.getById(Mining_Utils.getBestPick()).name());
       c.shopBuy(Mining_Utils.getBestPick());
       c.closeShop();
       c.sleep(1200);
@@ -90,7 +90,7 @@ public class Mine {
       }
       return 50;
     } else if (c.distanceTo(293, 3329) < 5) {
-      c.setStatus("Opening Nurmof shop");
+      AIOAIO.state.status = ("Opening Nurmof shop");
       c.openShop(new int[] {NpcId.NURMOF.getId()});
     } else {
       c.walkTowards(293, 3329);

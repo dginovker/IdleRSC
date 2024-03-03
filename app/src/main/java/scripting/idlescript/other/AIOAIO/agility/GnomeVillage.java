@@ -3,6 +3,7 @@ package scripting.idlescript.other.AIOAIO.agility;
 import bot.Main;
 import controller.Controller;
 import models.entities.SceneryId;
+import scripting.idlescript.other.AIOAIO.AIOAIO;
 
 public class GnomeVillage {
   private static Controller c;
@@ -13,7 +14,7 @@ public class GnomeVillage {
     System.out.println("Gnome Village run");
 
     if (!isInsideGnomeAgilityArena()) {
-      c.setStatus("Walking to Gnome Agility Arena");
+      AIOAIO.state.status = ("Walking to Gnome Agility Arena");
       c.walkTowards(692, 494);
     } else if (c.distanceTo(692, 499) <= 3) {
       c.atObject(SceneryId.NET_GNOME_COURSE_START);

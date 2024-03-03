@@ -31,7 +31,7 @@ public class AIOAIO_Script_Utils {
                     + " because we don't have that many!");
         return false;
       }
-      Main.getController().setStatus("Withdrawing " + amount + " " + item.name() + " from bank");
+      AIOAIO.state.status = ("Withdrawing " + amount + " " + item.name() + " from bank");
       Main.getController().withdrawItem(item.getId(), amount);
       Main.getController().sleep(680);
       return true;
@@ -40,7 +40,7 @@ public class AIOAIO_Script_Utils {
       Main.getController().walkTowardsBank();
       return true;
     }
-    Main.getController().setStatus("Opening bank");
+    AIOAIO.state.status = ("Opening bank");
     Main.getController().openBank();
     Main.getController().sleep(680);
     if (Main.getController().getBankItemCount(item.getId()) < amount) {
@@ -67,7 +67,7 @@ public class AIOAIO_Script_Utils {
    */
   public static boolean towardsDepositAll(int... exceptions) {
     if (Main.getController().isInBank()) {
-      Main.getController().setStatus("Depositing");
+      AIOAIO.state.status = ("Depositing");
 
       Set<Integer> excludedIds = Arrays.stream(exceptions).boxed().collect(Collectors.toSet());
       Arrays.stream(Main.getController().getInventoryItemIds())
@@ -84,7 +84,7 @@ public class AIOAIO_Script_Utils {
       Main.getController().walkTowardsBank();
       return false;
     }
-    Main.getController().setStatus("Opening bank");
+    AIOAIO.state.status = ("Opening bank");
     Main.getController().openBank();
     Main.getController().sleep(680);
     return false;

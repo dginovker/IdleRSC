@@ -83,17 +83,17 @@ public class Fish {
 
   private static int findFishingSpot() {
     if (AIOAIO.state.currentTask.getName() == "Salmon") {
-      c.setStatus("Walking to Barbarian Villiage");
+      AIOAIO.state.status = ("Walking to Barbarian Villiage");
       c.walkTowards(211, 500);
     } else {
-      c.setStatus("Walking to Catherby");
+      AIOAIO.state.status = ("Walking to Catherby");
       c.walkTowards(410, 502);
     }
     return 50;
   }
 
   private static int fish() {
-    c.setStatus("Fishing " + AIOAIO.state.currentTask.getName());
+    AIOAIO.state.status = ("Fishing " + AIOAIO.state.currentTask.getName());
     int[] fishCoords = c.getNearestReachableObjectById(getFishingSpotId(), true);
     if (AIOAIO.state.currentTask.getName() != "Shark") c.atObject(fishCoords[0], fishCoords[1]);
     else c.atObject2(fishCoords[0], fishCoords[1]);
@@ -122,7 +122,7 @@ public class Fish {
   }
 
   private static int buyTool() {
-    c.setStatus("Buying " + fishTool().name());
+    AIOAIO.state.status = ("Buying " + fishTool().name());
     if (c.isInShop()) {
       c.log("Buying " + fishTool().name());
       c.shopBuy(fishTool().getId());
