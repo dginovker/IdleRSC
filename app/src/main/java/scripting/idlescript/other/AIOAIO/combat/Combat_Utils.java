@@ -36,15 +36,16 @@ public class Combat_Utils {
 
     // We are now in bank, with no items
 
-    if (!Main.getController().isItemInBank(Get_Weapon_Utils.getBestWeapon().getId())) {
-      swordToBuy = Get_Weapon_Utils.getBestWeapon();
+    int bestWeaponId = Get_Weapon_Utils.getBestWeapon().getId();
+    if (!Main.getController().isItemInBank(bestWeaponId)) {
+      swordToBuy = ItemId.getById(bestWeaponId);
       return 50;
     }
 
-    c.withdrawItem(Get_Weapon_Utils.getBestWeapon().getId());
+    c.withdrawItem(bestWeaponId);
     c.closeBank();
     c.sleep(750);
-    c.equipItemById(Get_Weapon_Utils.getBestWeapon().getId());
+    c.equipItemById(bestWeaponId);
 
     AIOAIO.state.status = ("Withdrawing food");
     c.openBank();

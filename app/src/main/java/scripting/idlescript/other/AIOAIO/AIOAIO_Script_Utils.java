@@ -76,8 +76,14 @@ public class AIOAIO_Script_Utils {
               itemId -> {
                 Main.getController()
                     .depositItem(itemId, Main.getController().getInventoryItemCount(itemId));
-                Main.getController().sleep(500);
+                Main.getController().sleep(50);
               });
+      Main.getController()
+          .sleepUntil(
+              () ->
+                  Arrays.stream(Main.getController().getInventoryItemIds())
+                      .allMatch(itemId -> itemId == 0 || excludedIds.contains(itemId)),
+              3000);
       return true;
     }
     if (Main.getController().getNearestNpcByIds(Main.getController().bankerIds, false) == null) {
