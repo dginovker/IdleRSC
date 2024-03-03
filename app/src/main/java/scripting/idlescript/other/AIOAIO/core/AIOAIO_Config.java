@@ -43,9 +43,12 @@ public class AIOAIO_Config {
       if (file.exists()) {
         prop.load(new FileInputStream(file));
         fileExists = true;
+        Main.log("AIO AIO Loaded existing config for " + Main.config.getUsername() + "!");
+      } else {
+        Main.log("AIO AIO is creating a new config for " + Main.config.getUsername() + "!");
       }
     } catch (IOException e) {
-      Main.getController().log("Error reading config file: " + e.getMessage());
+      Main.getController().log("AIO AIO had error reading config file: " + e.getMessage());
     }
     List<AIOAIO_Skill> defaultSkills =
         Arrays.asList(
@@ -133,7 +136,9 @@ public class AIOAIO_Config {
                 true,
                 Collections.singletonList(
                     new AIOAIO_Task("Al Kharid Man", true, AlKharidMan::run))));
+
     for (AIOAIO_Skill skillConfig : defaultSkills) {
+      // If we already have the skill in the config, use the config's values
       String skillEnabledKey = skillConfig.getName() + ".enabled";
       boolean skillEnabled =
           fileExists
