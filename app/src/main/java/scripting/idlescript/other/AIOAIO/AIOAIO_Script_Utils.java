@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 import models.entities.ItemId;
+import orsc.ORSCharacter;
 
 public class AIOAIO_Script_Utils {
 
@@ -36,11 +37,11 @@ public class AIOAIO_Script_Utils {
       Main.getController().sleep(680);
       return true;
     }
-    if (Main.getController().getNearestNpcByIds(Main.getController().bankerIds, false) == null) {
+    if (getDistanceToNearestBanker() > 5) {
       Main.getController().walkTowardsBank();
       return true;
     }
-    AIOAIO.state.status = ("Opening bank");
+    AIOAIO.state.status = ("Opening bank to get item");
     Main.getController().openBank();
     Main.getController().sleep(680);
     if (Main.getController().getBankItemCount(item.getId()) < amount) {
@@ -86,13 +87,32 @@ public class AIOAIO_Script_Utils {
               3000);
       return true;
     }
-    if (Main.getController().getNearestNpcByIds(Main.getController().bankerIds, false) == null) {
+    if (getDistanceToNearestBanker() > 5) {
       Main.getController().walkTowardsBank();
       return false;
     }
-    AIOAIO.state.status = ("Opening bank");
+    AIOAIO.state.status = ("Opening bank to deposit all");
     Main.getController().openBank();
     Main.getController().sleep(680);
     return false;
+  }
+
+  /**
+   * Gets the distance to the nearest banker NPC Useful because sometimes the banker NPC isn't null,
+   * but it's also not nearby
+   *
+   * @return distance to nearest banker NPC, or Integer.MAX_VALUE if no banker NPCs are found
+   */
+  public static int getDistanceToNearestBanker() {
+    ORSCharacter banker =
+        Main.getController().getNearestNpcByIds(Main.getController().bankerIds, false);
+    if (banker == null) return Integer.MAX_VALUE;
+    int dist =
+        Main.getController()
+            .distanceTo(
+                Main.getController().convertX(banker.currentX),
+                Main.getController().convertZ(banker.currentZ));
+    // Main.getController().log("Dist to bank: " + dist);
+    return dist;
   }
 }

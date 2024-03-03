@@ -127,7 +127,7 @@ public class Combat_Utils {
 
   public static void safelyAbortTask() {
     Main.getController().log("Trying to safely abort task!");
-    if (Main.getController().getNearestNpcByIds(Main.getController().bankerIds, false) == null) {
+    if (AIOAIO_Script_Utils.getDistanceToNearestBanker() > 5) {
       Main.getController().walkTowardsBank();
     } else {
       AIOAIO.state.endTime = System.currentTimeMillis();

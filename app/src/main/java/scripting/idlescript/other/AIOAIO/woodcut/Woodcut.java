@@ -85,11 +85,11 @@ public class Woodcut {
   }
 
   private static int getAxeFromBank() {
-    if (Main.getController().getNearestNpcByIds(Main.getController().bankerIds, false) == null) {
+    if (AIOAIO_Script_Utils.getDistanceToNearestBanker() > 5) {
       c.walkTowardsBank();
       return 100;
     }
-    AIOAIO.state.status = ("Opening bank");
+    AIOAIO.state.status = ("Opening bank to get axe");
     c.openBank();
     if (!Woodcutting_Utils.hasAxeInBank()) {
       System.out.println("No axe in bank, gotta get one..");

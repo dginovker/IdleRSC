@@ -46,11 +46,11 @@ public class Mine {
   }
 
   private static int getPickFromBank() {
-    if (Main.getController().getNearestNpcByIds(Main.getController().bankerIds, false) == null) {
+    if (AIOAIO_Script_Utils.getDistanceToNearestBanker() > 5) {
       c.walkTowardsBank();
       return 100;
     }
-    AIOAIO.state.status = ("Opening bank");
+    AIOAIO.state.status = ("Opening bank to get pick");
     c.openBank();
     if (!Mining_Utils.hasPickInBank()) {
       System.out.println("No pick in bank, gotta get one..");
