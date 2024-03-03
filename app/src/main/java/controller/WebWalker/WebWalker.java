@@ -208,6 +208,8 @@ public class WebWalker {
         return CustomLabelHandlers.gnomeAgilityClimbDownTower();
       case "skipTutorial":
         return CustomLabelHandlers.skipTutorial();
+      case "lummyNorthChickensGate":
+        return CustomLabelHandlers.lummyNorthChickensGate();
       default:
         Main.getController().log("Missing function for label: " + label);
         return false;

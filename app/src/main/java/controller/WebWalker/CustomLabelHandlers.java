@@ -62,20 +62,11 @@ public class CustomLabelHandlers {
   }
 
   public static boolean lummyEastCowGate() {
-    boolean goingEast = Main.getController().currentX() >= 105;
-    if (Main.getController().getObjectAtCoord(105, 619) == 60) {
-      Main.getController().log("Opening Lummy East Cow Gate");
-      Main.getController().atObject(105, 619);
-      Main.getController().sleep(1000);
-    }
-    if (Main.getController().getObjectAtCoord(105, 619) == 60) {
-      Main.getController().log("Failed to open :C");
-      return false;
-    }
-    Main.getController().walkTo(goingEast ? 104 : 105, 619);
-    return goingEast
-        ? Main.getController().currentX() <= 104
-        : Main.getController().currentX() >= 105;
+    if (Main.getController().getObjectAtCoord(105, 619) == 59) return true;
+    Main.getController().log("Opening Lummy East Cow Gate");
+    Main.getController().atObject(105, 619);
+    return Main.getController()
+        .sleepUntil(() -> Main.getController().getObjectAtCoord(105, 619) == 59, 6000);
   }
 
   public static boolean southFallyTavGate() {
@@ -297,5 +288,13 @@ public class CustomLabelHandlers {
     Main.getController().skipTutorialIsland();
     Main.getController().sleepUntil(() -> Main.getController().distanceTo(207, 750) > 50);
     return Main.getController().distanceTo(207, 750) > 50;
+  }
+
+  public static boolean lummyNorthChickensGate() {
+    if (Main.getController().getObjectAtCoord(158, 614) == 59) return true; // Gate is already open
+    Main.log("Opening North Chickens Gate...");
+    Main.getController().atObject(158, 614);
+    return Main.getController()
+        .sleepUntil(() -> Main.getController().getObjectAtCoord(158, 614) == 59, 6000);
   }
 }

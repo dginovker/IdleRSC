@@ -13,9 +13,8 @@ public class GnomeVillage {
   public static int run() {
     c = Main.getController();
     if (Main.getController().getCurrentStat(Main.getController().getStatId("Hits")) <= 20) {
-      c
-          .log(
-              "Aborted Gnome Village because I have below 20hp and probably can't cross White Wolf alive!");
+      c.log(
+          "Aborted Gnome Village because I have below 20hp and probably can't cross White Wolf alive!");
       AIOAIO.state.endTime = System.currentTimeMillis();
       return 0;
     }
@@ -60,8 +59,10 @@ public class GnomeVillage {
   private static boolean isInsideGnomeAgilityArena() {
 
     return c.currentX() >= 681 && c.currentY() >= 492 && c.currentX() < 695 && c.currentY() <= 510
-        || c.getNearestReachableObjectById(SceneryId.WATCH_TOWER_GNOME_COURSE_1ST_F.getId(), true) != null
+        || c.getNearestReachableObjectById(SceneryId.WATCH_TOWER_GNOME_COURSE_1ST_F.getId(), true)
+            != null
         || c.getNearestReachableObjectById(SceneryId.ROPESWING_GNOME_COURSE.getId(), true) != null
-        || c.getNearestReachableObjectById(SceneryId.WATCH_TOWER_GNOME_COURSE_2ND_F.getId(), true) != null;
+        || c.getNearestReachableObjectById(SceneryId.WATCH_TOWER_GNOME_COURSE_2ND_F.getId(), true)
+            != null;
   }
 }
