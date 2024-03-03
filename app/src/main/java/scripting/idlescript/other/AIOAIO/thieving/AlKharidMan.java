@@ -18,8 +18,14 @@ public class AlKharidMan {
     c = Main.getController();
     c.setBatchBarsOn();
 
-    if (c.getInventoryItemCount() >= 30) AIOAIO_Script_Utils.towardsDepositAll();
-    else if (inCabbageField() && c.getInventoryItemCount() <= 20) pickCabbage();
+    if (AIOAIO.state.taskStartup && c.getInventoryItemCount() <= 0) {
+      AIOAIO.state.taskStartup = false;
+    }
+    if (AIOAIO.state.taskStartup) {
+      AIOAIO_Script_Utils.towardsDepositAll();
+    }
+
+    if (inCabbageField() && c.getInventoryItemCount() <= 20) pickCabbage();
     else if (goingToCabbages || Combat_Utils.needToEat() && !Combat_Utils.hasFood()) goToCabbages();
     else if (Combat_Utils.needToEat()) Combat_Utils.runAndEat();
     else if (c.isInCombat()) {
