@@ -6,6 +6,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import models.entities.ItemId;
 import models.entities.NpcId;
 import orsc.ORSCharacter;
+import scripting.idlescript.other.AIOAIO.AIOAIO_Script_Utils;
 import scripting.idlescript.other.AIOAIO.combat.Combat_Utils;
 
 public class AlKharidMan {
@@ -16,7 +17,8 @@ public class AlKharidMan {
     c = Main.getController();
     c.setBatchBarsOn();
 
-    if (inCabbageField() && c.getInventoryItemCount() <= 20) pickCabbage();
+    if (c.getInventoryItemCount() >= 30) AIOAIO_Script_Utils.towardsDepositAll();
+    else if (inCabbageField() && c.getInventoryItemCount() <= 20) pickCabbage();
     else if (goingToCabbages || Combat_Utils.needToEat() && !Combat_Utils.hasFood()) goToCabbages();
     else if (Combat_Utils.needToEat()) Combat_Utils.runAndEat();
     else if (c.isInCombat()) {
