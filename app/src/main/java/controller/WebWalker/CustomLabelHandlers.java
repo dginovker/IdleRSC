@@ -292,4 +292,10 @@ public class CustomLabelHandlers {
     Main.getController().sleep(680);
     return true;
   }
+
+  public static boolean skipTutorial() {
+    Main.getController().skipTutorialIsland();
+    Main.getController().sleepUntil(() -> Main.getController().distanceTo(207, 750) > 50);
+    return Main.getController().distanceTo(207, 750) > 50;
+  }
 }

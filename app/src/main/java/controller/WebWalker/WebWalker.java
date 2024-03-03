@@ -206,6 +206,8 @@ public class WebWalker {
         return CustomLabelHandlers.gnomeAgilityRopeSwing();
       case "gnomeAgilityClimbDownTower":
         return CustomLabelHandlers.gnomeAgilityClimbDownTower();
+      case "skipTutorial":
+        return CustomLabelHandlers.skipTutorial();
       default:
         Main.getController().log("Missing function for label: " + label);
         return false;
