@@ -23,19 +23,25 @@ public class Fish {
     }
     if (needBuyTool && c.getInventoryItemCount(ItemId.COINS.getId()) < 405)
       return getCoinsFromBank();
-    else if (needBuyTool) return buyTool();
-    else if (!hasFishingTool()) return getToolFromBank();
+    else if (needBuyTool)
+      return buyTool();
+    else if (!hasFishingTool())
+      return getToolFromBank();
     else if (c.getInventoryItemCount() >= 30)
       AIOAIO_Script_Utils.towardsDepositAll(fishTool().getId(), ItemId.FEATHER.getId());
-    else if (c.isBatching()) return 250; // Wait to finish fishing
-    else if (c.getNearestReachableObjectById(getFishingSpotId(), true) != null) return fish();
-    else return findFishingSpot();
+    else if (c.isBatching())
+      return 250; // Wait to finish fishing
+    else if (c.getNearestReachableObjectById(getFishingSpotId(), true) != null)
+      return fish();
+    else
+      return findFishingSpot();
     return 50;
   }
 
   private static boolean hasFishingTool() {
-    if (AIOAIO.state.currentTask.getName() == "Salmon"
-        && c.getInventoryItemCount(ItemId.FEATHER.getId()) <= 0) return false;
+    if (AIOAIO.state.currentTask.getName().equals("Salmon")
+        && c.getInventoryItemCount(ItemId.FEATHER.getId()) <= 0)
+      return false;
     return c.getInventoryItemCount(fishTool().getId()) >= 1;
   }
 
@@ -82,7 +88,7 @@ public class Fish {
   }
 
   private static int findFishingSpot() {
-    if (AIOAIO.state.currentTask.getName() == "Salmon") {
+    if (AIOAIO.state.currentTask.getName().equals("Salmon")) {
       AIOAIO.state.status = ("Walking to Barbarian Villiage");
       c.walkTowards(211, 500);
     } else {
@@ -95,8 +101,10 @@ public class Fish {
   private static int fish() {
     AIOAIO.state.status = ("Fishing " + AIOAIO.state.currentTask.getName());
     int[] fishCoords = c.getNearestReachableObjectById(getFishingSpotId(), true);
-    if (AIOAIO.state.currentTask.getName() != "Shark") c.atObject(fishCoords[0], fishCoords[1]);
-    else c.atObject2(fishCoords[0], fishCoords[1]);
+    if (AIOAIO.state.currentTask.getName() != "Shark")
+      c.atObject(fishCoords[0], fishCoords[1]);
+    else
+      c.atObject2(fishCoords[0], fishCoords[1]);
     return 1200;
   }
 
@@ -105,7 +113,7 @@ public class Fish {
       needBuyTool = true;
     }
 
-    if (AIOAIO.state.currentTask.getName() == "Salmon") {
+    if (AIOAIO.state.currentTask.getName().equals("Salmon")) {
       if (!AIOAIO_Script_Utils.towardsGetFromBank(ItemId.FEATHER, -1, false)) {
         needBuyTool = true;
       }
@@ -114,7 +122,8 @@ public class Fish {
   }
 
   private static int getCoinsFromBank() {
-    if (!AIOAIO_Script_Utils.towardsGetFromBank(ItemId.COINS, 1405, true)) {
+    if (!AIOAIO_Script_Utils.towardsGetFromBank(ItemId.COINS,
+        AIOAIO.state.currentTask.getName().equals("Salmon") ? 1405 : 30, true)) {
       Main.getController().log("Legit too poor to fish.. Skipping task");
       AIOAIO.state.endTime = System.currentTimeMillis();
     }
@@ -126,7 +135,7 @@ public class Fish {
     if (c.isInShop()) {
       c.log("Buying " + fishTool().name());
       c.shopBuy(fishTool().getId());
-      if (AIOAIO.state.currentTask.getName() == "Salmon") {
+      if (AIOAIO.state.currentTask.getName().equals("Salmon")) {
         c.log("Buying feathers");
         c.sleep(600);
         c.shopBuy(ItemId.FEATHER.getId(), 200);
@@ -146,7 +155,7 @@ public class Fish {
       return 50;
     }
     c.log("Trading Gerrant..");
-    c.openShop(new int[] {NpcId.GERRANT.getId()});
+    c.openShop(new int[] { NpcId.GERRANT.getId() });
     return 3000;
   }
 }
