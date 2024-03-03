@@ -38,15 +38,17 @@ public class Combat_Utils {
     // We are now in bank, with no items
 
     int bestWeaponId = Get_Weapon_Utils.getBestWeapon().getId();
-    if (!Main.getController().isItemInBank(bestWeaponId)) {
+    if (!Main.getController().isItemInBank(bestWeaponId) && !Main.getController().isItemIdEquipped(bestWeaponId)) {
       swordToBuy = ItemId.getById(bestWeaponId);
       return 50;
     }
 
-    c.withdrawItem(bestWeaponId);
-    c.closeBank();
-    c.sleep(750);
-    c.equipItemById(bestWeaponId);
+    if (!Main.getController().isItemIdEquipped(bestWeaponId)) {
+      c.withdrawItem(bestWeaponId);
+      c.closeBank();
+      c.sleep(750);
+      c.equipItemById(bestWeaponId);
+    }
 
     AIOAIO.state.status = ("Withdrawing food");
     c.openBank();
@@ -67,7 +69,8 @@ public class Combat_Utils {
   }
 
   /**
-   * Eats once piece of food from food[] array (assuming you have at least one piece)
+   * Eats once piece of food from food[] array (assuming you have at least one
+   * piece)
    */
   public static void eatFood() {
     for (ItemId foodId : food) {
