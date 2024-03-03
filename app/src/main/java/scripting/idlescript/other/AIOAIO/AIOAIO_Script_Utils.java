@@ -60,11 +60,12 @@ public class AIOAIO_Script_Utils {
   }
 
   /**
-   * Progressively takes steps towards depositing everything except the passed in Ids
+   * Progressively takes steps towards depositing everything except the passed in Ids Returns true
+   * if it's done (bank will be open)
    *
    * @param exceptions
    */
-  public static void towardsDepositAll(int... exceptions) {
+  public static boolean towardsDepositAll(int... exceptions) {
     if (Main.getController().isInBank()) {
       Main.getController().setStatus("Depositing");
 
@@ -77,14 +78,15 @@ public class AIOAIO_Script_Utils {
                     .depositItem(itemId, Main.getController().getInventoryItemCount(itemId));
                 Main.getController().sleep(500);
               });
-      return;
+      return true;
     }
     if (Main.getController().getNearestNpcByIds(Main.getController().bankerIds, false) == null) {
       Main.getController().walkTowardsBank();
-      return;
+      return false;
     }
     Main.getController().setStatus("Opening bank");
     Main.getController().openBank();
     Main.getController().sleep(680);
+    return false;
   }
 }

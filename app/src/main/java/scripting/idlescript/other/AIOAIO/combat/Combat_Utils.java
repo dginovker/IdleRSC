@@ -2,51 +2,14 @@ package scripting.idlescript.other.AIOAIO.combat;
 
 import bot.Main;
 import controller.Controller;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import models.entities.ItemId;
 import models.entities.NpcId;
 import orsc.ORSCharacter;
 import scripting.idlescript.other.AIOAIO.AIOAIO;
+import scripting.idlescript.other.AIOAIO.AIOAIO_Script_Utils;
 
 public class Combat_Utils {
-  // Melee weapons in Runescape Classic ordered from best -> worst with their
-  // required attack levels
-  static final Map<ItemId, Integer> meleeWeaponsWithLevels = new LinkedHashMap<>();
-
-  static {
-    meleeWeaponsWithLevels.put(ItemId.DRAGON_SWORD, 60);
-    meleeWeaponsWithLevels.put(ItemId.DRAGON_AXE, 60);
-    meleeWeaponsWithLevels.put(ItemId.RUNE_2_HANDED_SWORD, 40);
-    meleeWeaponsWithLevels.put(ItemId.RUNE_LONG_SWORD, 40);
-    meleeWeaponsWithLevels.put(ItemId.RUNE_SHORT_SWORD, 40);
-    meleeWeaponsWithLevels.put(ItemId.RUNE_BATTLE_AXE, 40);
-    meleeWeaponsWithLevels.put(ItemId.ADAMANTITE_2_HANDED_SWORD, 30);
-    meleeWeaponsWithLevels.put(ItemId.ADAMANTITE_LONG_SWORD, 30);
-    meleeWeaponsWithLevels.put(ItemId.ADAMANTITE_SHORT_SWORD, 30);
-    meleeWeaponsWithLevels.put(ItemId.ADAMANTITE_BATTLE_AXE, 30);
-    meleeWeaponsWithLevels.put(ItemId.MITHRIL_2_HANDED_SWORD, 20);
-    meleeWeaponsWithLevels.put(ItemId.MITHRIL_LONG_SWORD, 20);
-    meleeWeaponsWithLevels.put(ItemId.MITHRIL_SHORT_SWORD, 20);
-    meleeWeaponsWithLevels.put(ItemId.MITHRIL_BATTLE_AXE, 20);
-    meleeWeaponsWithLevels.put(ItemId.BLACK_2_HANDED_SWORD, 10);
-    meleeWeaponsWithLevels.put(ItemId.BLACK_LONG_SWORD, 10);
-    meleeWeaponsWithLevels.put(ItemId.BLACK_SHORT_SWORD, 10);
-    meleeWeaponsWithLevels.put(ItemId.BLACK_BATTLE_AXE, 10);
-    meleeWeaponsWithLevels.put(ItemId.STEEL_2_HANDED_SWORD, 5);
-    meleeWeaponsWithLevels.put(ItemId.STEEL_LONG_SWORD, 5);
-    meleeWeaponsWithLevels.put(ItemId.STEEL_SHORT_SWORD, 5);
-    meleeWeaponsWithLevels.put(ItemId.STEEL_BATTLE_AXE, 5);
-    meleeWeaponsWithLevels.put(ItemId.IRON_2_HANDED_SWORD, 1);
-    meleeWeaponsWithLevels.put(ItemId.IRON_LONG_SWORD, 1);
-    meleeWeaponsWithLevels.put(ItemId.IRON_SHORT_SWORD, 1);
-    meleeWeaponsWithLevels.put(ItemId.IRON_BATTLE_AXE, 1);
-    meleeWeaponsWithLevels.put(ItemId.BRONZE_2_HANDED_SWORD, 1);
-    meleeWeaponsWithLevels.put(ItemId.BRONZE_LONG_SWORD, 1);
-    meleeWeaponsWithLevels.put(ItemId.BRONZE_SHORT_SWORD, 1);
-    meleeWeaponsWithLevels.put(ItemId.BRONZE_BATTLE_AXE, 1);
-    meleeWeaponsWithLevels.put(ItemId.BRONZE_AXE, 1);
-  }
+  private static ItemId swordToBuy = null; // If not null, we're out buying a sword
 
   // Food to use for training
   public static final ItemId[] food = {
@@ -62,30 +25,27 @@ public class Combat_Utils {
 
   public static int getFightingGear() {
     Controller c = Main.getController();
-    if (c.getNearestNpcByIds(c.bankerIds, false) == null) {
-      c.walkTowardsBank();
-      return 100;
+    if (swordToBuy != null) {
+      if (Get_Weapon_Utils.buySword(swordToBuy)) {
+        swordToBuy = null;
+      }
+      return 50;
     }
-    c.setStatus("Opening bank");
-    c.openBank();
-    c.setStatus("Depositing Everything");
-    for (int itemId : c.getInventoryItemIds()) {
-      Main.getController().depositItem(itemId, Main.getController().getInventoryItemCount(itemId));
-      Main.getController().sleep(100);
+
+    if (!AIOAIO_Script_Utils.towardsDepositAll()) return 50;
+
+    // We are now in bank, with no items
+
+    if (!Main.getController().isItemInBank(Get_Weapon_Utils.getBestWeapon().getId())) {
+      swordToBuy = Get_Weapon_Utils.getBestWeapon();
+      return 50;
     }
-    c.setStatus("Withdrawing best melee weapon");
-    int playerAttackLevel = c.getCurrentStat(c.getStatId("Attack"));
-    for (Map.Entry<ItemId, Integer> entry : meleeWeaponsWithLevels.entrySet()) {
-      if (playerAttackLevel < entry.getValue() || c.getBankItemCount(entry.getKey().getId()) <= 0)
-        continue;
-      c.log("Found " + entry.getKey().name() + " as my best weapon Uwu");
-      c.withdrawItem(entry.getKey().getId());
-      c.closeBank();
-      c.sleep(750);
-      c.equipItemById(entry.getKey().getId());
-      break;
-    }
+
+    c.withdrawItem(Get_Weapon_Utils.getBestWeapon().getId());
     c.closeBank();
+    c.sleep(750);
+    c.equipItemById(Get_Weapon_Utils.getBestWeapon().getId());
+
     c.setStatus("Withdrawing food");
     c.openBank();
     for (ItemId foodId : food) {

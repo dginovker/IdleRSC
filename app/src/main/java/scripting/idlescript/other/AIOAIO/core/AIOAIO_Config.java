@@ -25,7 +25,10 @@ import scripting.idlescript.other.AIOAIO.thieving.AlKharidMan;
 import scripting.idlescript.other.AIOAIO.woodcut.Woodcut;
 
 public class AIOAIO_Config {
-  private static final String CONFIG_PATH = "Cache/botconfigs/aioaio.properties";
+  private static String getConfigPath() {
+    return "Cache/botconfigs/" + Main.config.getUsername() + "/aioaio.properties";
+  }
+
   public List<AIOAIO_Skill> skills = new ArrayList<>();
 
   public AIOAIO_Config() {
@@ -36,7 +39,7 @@ public class AIOAIO_Config {
     Properties prop = new Properties();
     boolean fileExists = false;
     try {
-      File file = new File(CONFIG_PATH);
+      File file = new File(getConfigPath());
       if (file.exists()) {
         prop.load(new FileInputStream(file));
         fileExists = true;
@@ -160,10 +163,10 @@ public class AIOAIO_Config {
       }
     }
     try {
-      Files.createDirectories(Paths.get(CONFIG_PATH).getParent());
-      prop.store(new FileOutputStream(CONFIG_PATH), null);
+      Files.createDirectories(Paths.get(getConfigPath()).getParent());
+      prop.store(new FileOutputStream(getConfigPath()), null);
     } catch (IOException e) {
-      Main.getController().log("Couldn't save config file at " + CONFIG_PATH);
+      Main.getController().log("Couldn't save config file at " + getConfigPath());
       e.printStackTrace();
     }
   }
