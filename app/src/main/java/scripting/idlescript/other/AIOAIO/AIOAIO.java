@@ -19,7 +19,7 @@ public class AIOAIO extends IdleScript {
    */
   public static AIOAIO_State state = new AIOAIO_State();
 
-  public static final String VERSION = "1.10.3";
+  public static final String VERSION = "1.10.4";
 
   public int start(String[] parameters) {
     if (!state.guiSetup) {
@@ -32,6 +32,11 @@ public class AIOAIO extends IdleScript {
       } catch (Exception e) {
         e.printStackTrace();
         System.out.println("Exception occured! Sleeping 1.5s...");
+        return 1500;
+      } catch (Throwable t) {
+        t.printStackTrace();
+        Main.log("A straight JVM error occured! " + t.getMessage());
+        Main.log("I don't know _why_ this happens! Just gonna sleep 1.5s and ignore it lol");
         return 1500;
       }
     }
