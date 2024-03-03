@@ -15,14 +15,14 @@ public class AIOAIO_Script_Utils {
    * the bank
    *
    * @param item
-   * @param amount -1 if withdraw all but 1
+   * @param amount -1 if withdraw all
    * @return
    */
   public static boolean towardsGetFromBank(ItemId item, int amount, boolean depositEverythingElse) {
     if (Main.getController().isInBank()) {
       if (depositEverythingElse) Main.getController().depositAll();
       if (amount == -1) amount = Main.getController().getBankItemCount(item.getId());
-      if (Main.getController().getBankItemCount(item.getId()) < amount) {
+      if (Main.getController().getBankItemCount(item.getId()) < amount || amount == 0) {
         Main.getController()
             .log(
                 "Can't withdraw "
@@ -38,24 +38,11 @@ public class AIOAIO_Script_Utils {
       return true;
     }
     if (getDistanceToNearestBanker() > 5) {
+      AIOAIO.state.status = "Walking towards bank to get " + item.name();
       Main.getController().walkTowardsBank();
       return true;
     }
-    AIOAIO.state.status = ("Opening bank to get item");
     Main.getController().openBank();
-    Main.getController().sleep(680);
-    if (Main.getController().getBankItemCount(item.getId()) < amount) {
-      Main.getController()
-          .log(
-              "Not enough "
-                  + item.name()
-                  + " in bank! Need "
-                  + amount
-                  + ", have "
-                  + Main.getController().getBankItemCount(item.getId()));
-      return false;
-    }
-    Main.getController().withdrawItem(item.getId(), amount);
     Main.getController().sleep(680);
     return true;
   }
