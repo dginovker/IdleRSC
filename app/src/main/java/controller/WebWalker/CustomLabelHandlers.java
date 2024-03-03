@@ -234,6 +234,9 @@ public class CustomLabelHandlers {
 
   public static boolean gnomeTreeGate() {
     boolean goingNorth = Main.getController().currentY() >= 532;
+    if (goingNorth) {
+      Main.getController().walkTo(703, 532);
+    }
     Main.getController().atObject(703, 531);
     Main.getController()
         .sleepUntil(
@@ -266,6 +269,7 @@ public class CustomLabelHandlers {
   }
 
   public static boolean gnomeAgilityClimbTower() {
+    Main.getController().walkTo(693, 1451);
     Main.getController().atObject(SceneryId.WATCH_TOWER_GNOME_COURSE_1ST_F);
     Main.getController()
         .sleepUntil(

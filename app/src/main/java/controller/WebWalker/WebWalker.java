@@ -31,19 +31,7 @@ public class WebWalker {
     Map<WebwalkNode, int[]> closestNodesToEndCoords = new HashMap<>();
     for (int[] coords : endCoords) {
       WebwalkNode node = graph.findClosestNode(coords[0], coords[1]);
-      if (node == null) {
-        Main.getController()
-            .log(
-                "Can't find the closest walkable node to "
-                    + coords[0]
-                    + ", "
-                    + coords[1]
-                    + ", trying Euclidean closest.");
-        node = graph.findClosestNodeEuclidian(coords[0], coords[1]);
-      }
-      if (node != null) {
-        closestNodesToEndCoords.put(node, coords);
-      }
+      closestNodesToEndCoords.put(node, coords);
     }
 
     if (closestNodesToEndCoords.isEmpty()) {
@@ -57,15 +45,6 @@ public class WebWalker {
     }
 
     WebwalkNode startNode = graph.findClosestNode(currentX, currentY);
-    if (startNode == null) {
-      Main.getController()
-          .log("Can't figure out my startNode, yeeting off in a random direction to get unstuck..");
-      Main.getController()
-          .walkTo(
-              currentX + ThreadLocalRandom.current().nextInt(-5, 6),
-              currentY + ThreadLocalRandom.current().nextInt(-5, 6));
-      return true;
-    }
 
     // Use modified Dijkstra's algorithm to find the path to the closest of the end
     // nodes
