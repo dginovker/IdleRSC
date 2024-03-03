@@ -13,14 +13,14 @@ public class Combat_Utils {
 
   // Food to use for training
   public static final ItemId[] food = {
-    ItemId.CABBAGE,
-    ItemId.SHRIMP,
-    ItemId.MACKEREL,
-    ItemId.TROUT,
-    ItemId.SALMON,
-    ItemId.LOBSTER,
-    ItemId.SWORDFISH,
-    ItemId.SHARK
+      ItemId.CABBAGE,
+      ItemId.SHRIMP,
+      ItemId.MACKEREL,
+      ItemId.TROUT,
+      ItemId.SALMON,
+      ItemId.LOBSTER,
+      ItemId.SWORDFISH,
+      ItemId.SHARK
   };
 
   public static int getFightingGear() {
@@ -32,7 +32,8 @@ public class Combat_Utils {
       return 50;
     }
 
-    if (!AIOAIO_Script_Utils.towardsDepositAll()) return 50;
+    if (!AIOAIO_Script_Utils.towardsDepositAll())
+      return 50;
 
     // We are now in bank, with no items
 
@@ -50,7 +51,8 @@ public class Combat_Utils {
     AIOAIO.state.status = ("Withdrawing food");
     c.openBank();
     for (ItemId foodId : food) {
-      if (c.getInventoryItemCount() >= 30) break;
+      if (c.getInventoryItemCount() >= 30)
+        break;
       c.withdrawItem(foodId.getId(), c.getBankItemCount(foodId.getId()));
     }
     c.sleep(2000);
@@ -64,9 +66,13 @@ public class Combat_Utils {
     return 680;
   }
 
+  /**
+   * Eats once piece of food from food[] array (assuming you have at least one piece)
+   */
   public static void eatFood() {
     for (ItemId foodId : food) {
-      if (Main.getController().getInventoryItemCount(foodId.getId()) <= 0) continue;
+      if (Main.getController().getInventoryItemCount(foodId.getId()) <= 0)
+        continue;
       Main.getController().itemCommand(foodId.getId());
       break;
     }
@@ -74,13 +80,18 @@ public class Combat_Utils {
 
   public static boolean hasFood() {
     for (ItemId foodId : food) {
-      if (Main.getController().getInventoryItemCount(foodId.getId()) > 0) return true;
+      if (Main.getController().getInventoryItemCount(foodId.getId()) > 0)
+        return true;
     }
     return false;
   }
 
+  /**
+   * @return true if we're below 60% health, false otherwise
+   */
   public static boolean needToEat() {
-    return Main.getController().getCurrentStat(Main.getController().getStatId("Hits")) <= 6;
+    return Main.getController().getCurrentStat(Main.getController().getStatId("Hits")) <= 0.6
+        * Main.getController().getBaseStat(Main.getController().getStatId("Hits"));
   }
 
   /**
@@ -91,7 +102,8 @@ public class Combat_Utils {
   public static void attackNpc(NpcId npcId) {
     AIOAIO.state.status = ("@yel@Bopping " + npcId.name());
     ORSCharacter npc = Main.getController().getNearestNpcById(npcId.getId(), false);
-    if (npc == null) return;
+    if (npc == null)
+      return;
     Main.getController().attackNpc(npc.serverIndex);
     Main.getController().sleepUntil(() -> Main.getController().isInCombat(), 5000);
   }
