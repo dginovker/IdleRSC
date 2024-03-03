@@ -119,7 +119,7 @@ public class Combat_Utils {
 
   public static void safelyAbortTask() {
     Main.getController().log("Trying to safely abort task!");
-    if (Main.getController().getNearestNpcById(NpcId.BANKER.getId(), false) == null) {
+    if (Main.getController().getNearestNpcByIds(Main.getController().bankerIds, false) == null) {
       Main.getController().walkTowardsBank();
     } else {
       AIOAIO.state.endTime = System.currentTimeMillis();

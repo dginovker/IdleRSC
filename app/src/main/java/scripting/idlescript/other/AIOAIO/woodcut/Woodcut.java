@@ -85,7 +85,7 @@ public class Woodcut {
   }
 
   private static int getAxeFromBank() {
-    if (c.getNearestNpcById(95, false) == null) {
+    if (Main.getController().getNearestNpcByIds(Main.getController().bankerIds, false) == null) {
       c.walkTowardsBank();
       return 100;
     }
