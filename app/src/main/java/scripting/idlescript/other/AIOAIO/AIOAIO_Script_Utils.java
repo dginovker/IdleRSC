@@ -20,6 +20,7 @@ public class AIOAIO_Script_Utils {
    */
   public static boolean towardsGetFromBank(ItemId item, int amount, boolean depositEverythingElse) {
     if (Main.getController().isInBank()) {
+      AIOAIO.state.status = "Withdrawing " + item.name();
       if (depositEverythingElse) Main.getController().depositAll();
       Main.getController().sleepUntil(() -> Main.getController().getInventoryItemCount() == 0);
       if (amount == -1) amount = Main.getController().getBankItemCount(item.getId());
@@ -43,8 +44,8 @@ public class AIOAIO_Script_Utils {
       Main.getController().walkTowardsBank();
       return true;
     }
+    AIOAIO.state.status = "Opening bank to get " + item.name();
     Main.getController().openBank();
-    Main.getController().sleep(680);
     return true;
   }
 
