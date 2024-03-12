@@ -297,4 +297,24 @@ public class CustomLabelHandlers {
     return Main.getController()
         .sleepUntil(() -> Main.getController().getObjectAtCoord(158, 614) == 59, 6000);
   }
+
+  public static boolean lummyNorthGarlicGate() {
+    int xCoord = 184, yCoord = 604;
+    if (Main.getController().getObjectAtCoord(xCoord, yCoord) == 59)
+      return true; // Gate is already open
+    Main.log("Opening Lummy North Garlic Gate...");
+    Main.getController().atObject(xCoord, yCoord);
+    return Main.getController()
+        .sleepUntil(() -> Main.getController().getObjectAtCoord(xCoord, yCoord) == 59, 6000);
+  }
+
+  public static boolean lummyNorthPotatoGate() {
+    int xCoord = 184, yCoord = 606;
+    if (Main.getController().getObjectAtCoord(xCoord, yCoord) == 59)
+      return true; // Gate is already open
+    Main.log("Opening Lummy North Garlic Gate...");
+    Main.getController().atObject(xCoord, yCoord);
+    return Main.getController()
+        .sleepUntil(() -> Main.getController().getObjectAtCoord(xCoord, yCoord) == 59, 6000);
+  }
 }

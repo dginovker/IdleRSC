@@ -225,6 +225,10 @@ public class WebWalker {
         return CustomLabelHandlers.skipTutorial();
       case "lummyNorthChickensGate":
         return CustomLabelHandlers.lummyNorthChickensGate();
+      case "lummyNorthGarlicGate":
+        return CustomLabelHandlers.lummyNorthGarlicGate();
+      case "lummyNorthPotatoGate":
+        return CustomLabelHandlers.lummyNorthPotatoGate();
       default:
         Main.getController().log("Missing function for label: " + label);
         return false;
