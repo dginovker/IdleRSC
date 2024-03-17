@@ -157,7 +157,7 @@ public class Combat_Utils {
   }
 
   public static void safelyAbortTask() {
-    Main.getController().log("Trying to safely abort task!");
+    Main.getController().log("I need to eat but have no food! Trying to safely abort task!");
     if (AIOAIO_Script_Utils.getDistanceToNearestBanker() > 5) {
       Main.getController().walkTowardsBank();
     } else {
