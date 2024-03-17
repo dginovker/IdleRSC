@@ -13,7 +13,8 @@ public class Thieving_Utils {
 
   public static void leaveCombat() {
     AIOAIO.state.status = ("Getting out of combat");
-    Main.getController().walkToAsync(Main.getController().currentX(), Main.getController().currentY(), 0);
+    Main.getController()
+        .walkToAsync(Main.getController().currentX(), Main.getController().currentY(), 0);
     Main.getController().sleep(600);
   }
 
@@ -33,8 +34,17 @@ public class Thieving_Utils {
     AIOAIO.state.status = ("@yel@Depositing all my stuff before thieving");
     if (!AIOAIO_Script_Utils.towardsDepositAll()) return 50; // Still working on reaching the bank
     AIOAIO.state.status = ("@yel@Depositing complete, withdrawing up to 20 noms!");
+    int inventoryItemCount =
+        Main.getController()
+            .getInventoryItemCount(); // Keep track of how many items we have because we're gonna
+    // withdraw food super fast (faster than the
+    // controller.getInventoryItemCount will be able to update
+    // on!)
     for (ItemId foodId : Combat_Utils.food) {
-      Main.getController().withdrawItem(foodId.getId(), Math.min(Main.getController().getBankItemCount(foodId.getId()), 20 - Main.getController().getInventoryItemCount()));
+      int withdrawAmount =
+          Math.min(Main.getController().getBankItemCount(foodId.getId()), 20 - inventoryItemCount);
+      Main.getController().withdrawItem(foodId.getId(), withdrawAmount);
+      inventoryItemCount += withdrawAmount;
     }
     AIOAIO.state.taskStartup = false;
     AIOAIO.state.status = ("@yel@Finished withdrawing my noms, done Theiving startup!");
@@ -49,7 +59,10 @@ public class Thieving_Utils {
   }
 
   public static boolean inCabbageField() {
-    return Main.getController().currentX() >= 137 && Main.getController().currentY() <= 614 && Main.getController().currentX() <= 154 && Main.getController().currentY() >= 597;
+    return Main.getController().currentX() >= 137
+        && Main.getController().currentY() <= 614
+        && Main.getController().currentX() <= 154
+        && Main.getController().currentY() >= 597;
   }
 
   public static void pickCabbage() {

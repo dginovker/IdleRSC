@@ -22,12 +22,10 @@ public class AlKharidMan {
       Thieving_Utils.pickCabbage();
     else if (Thieving_Utils.goingToCabbages || Combat_Utils.needToEat() && !Combat_Utils.hasFood())
       Thieving_Utils.goToCabbages();
-    else if (Combat_Utils.needToEat())
-      Combat_Utils.runAndEat();
+    else if (Combat_Utils.needToEat()) Combat_Utils.runAndEat();
     else if (c.isInCombat()) {
       Thieving_Utils.leaveCombat();
-    } else if (c.getNearestNpcById(NpcId.MAN_ALKHARID.getId(), false) == null)
-      findAlkharidMen();
+    } else if (c.getNearestNpcById(NpcId.MAN_ALKHARID.getId(), false) == null) findAlkharidMen();
     else {
       Thieving_Utils.theiveNpc(NpcId.MAN_ALKHARID);
       return 680;

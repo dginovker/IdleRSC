@@ -54,7 +54,8 @@ public class AIOAIO_Script_Utils {
    * if it's done (bank will be open)
    *
    * @param exceptions Item Ids to not deposit
-   * @return true if the deposit is completed (+ bank is open), false if we only progressed towards making that happen
+   * @return true if the deposit is completed (+ bank is open), false if we only progressed towards
+   *     making that happen
    */
   public static boolean towardsDepositAll(int... exceptions) {
     if (Main.getController().isInBank()) {
