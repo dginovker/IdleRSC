@@ -22,6 +22,7 @@ import scripting.idlescript.other.AIOAIO.fishing.Fish;
 import scripting.idlescript.other.AIOAIO.fletching.Fletch;
 import scripting.idlescript.other.AIOAIO.mining.Mine;
 import scripting.idlescript.other.AIOAIO.thieving.AlKharidMan;
+import scripting.idlescript.other.AIOAIO.thieving.LumbridgeFarmer;
 import scripting.idlescript.other.AIOAIO.woodcut.Woodcut;
 
 public class AIOAIO_Config {
@@ -134,8 +135,9 @@ public class AIOAIO_Config {
             new AIOAIO_Skill(
                 "Thieving",
                 true,
-                Collections.singletonList(
-                    new AIOAIO_Task("Al Kharid Man", true, AlKharidMan::run))));
+                Arrays.asList(
+                    new AIOAIO_Task("Al Kharid Men", true, AlKharidMan::run),
+                    new AIOAIO_Task("Lumbridge Farmers", true, LumbridgeFarmer::run))));
 
     for (AIOAIO_Skill skillConfig : defaultSkills) {
       // If we already have the skill in the config, use the config's values

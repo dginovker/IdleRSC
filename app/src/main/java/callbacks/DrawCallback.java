@@ -133,15 +133,7 @@ public class DrawCallback {
 
       if (c.getShowCoords())
         c.drawString(
-            "Coords: @red@(@whi@"
-                + c.currentX()
-                + "@red@,@whi@"
-                + c.currentY()
-                + "@red@) ["
-                + c.mud.getMidRegionBaseX()
-                + ","
-                + c.mud.getMidRegionBaseZ()
-                + "]",
+            "Coords: @red@(@whi@" + c.currentX() + "@red@,@whi@" + c.currentY() + "@red@)",
             7,
             y,
             0xFFFFFF,
