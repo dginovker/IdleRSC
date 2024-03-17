@@ -22,7 +22,9 @@ public class AlKharidMan {
       AIOAIO.state.taskStartup = false;
     }
     if (AIOAIO.state.taskStartup) {
+      AIOAIO.state.status = ("@yel@Depositing all my stuff before thieving");
       AIOAIO_Script_Utils.towardsDepositAll();
+      return 50;
     }
 
     if (inCabbageField() && c.getInventoryItemCount() <= 20) pickCabbage();
@@ -58,6 +60,7 @@ public class AlKharidMan {
   }
 
   private static void goToCabbages() {
+    AIOAIO.state.status = ("@yel@Going to cabbage field");
     c.log("Going to cabbage");
     goingToCabbages = true;
     c.walkTowards(142, 608);
