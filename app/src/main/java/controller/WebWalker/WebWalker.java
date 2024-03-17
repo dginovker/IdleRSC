@@ -229,6 +229,10 @@ public class WebWalker {
         return CustomLabelHandlers.lummyNorthGarlicGate();
       case "lummyNorthPotatoGate":
         return CustomLabelHandlers.lummyNorthPotatoGate();
+      case "varrockPalaceNorthwestLadder":
+        return CustomLabelHandlers.varrockPalaceNorthwestLadder();
+      case "varrockPalaceFence":
+        return CustomLabelHandlers.varrockPalaceFence();
       default:
         Main.getController().log("Missing function for label: " + label);
         return false;
