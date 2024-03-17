@@ -15,6 +15,7 @@ import java.util.Properties;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import scripting.idlescript.other.AIOAIO.agility.GnomeVillage;
+import scripting.idlescript.other.AIOAIO.combat.AlKharidScorpions;
 import scripting.idlescript.other.AIOAIO.combat.Cow;
 import scripting.idlescript.other.AIOAIO.combat.JailGuard;
 import scripting.idlescript.other.AIOAIO.cooking.Cook;
@@ -60,19 +61,22 @@ public class AIOAIO_Config {
                 true,
                 Arrays.asList(
                     new AIOAIO_Task("Lummy Cows", true, Cow::attack),
-                    new AIOAIO_Task("Draynor Jailguard", true, JailGuard::attack))),
+                    new AIOAIO_Task("Draynor Jailguard", true, JailGuard::attack),
+                    new AIOAIO_Task("Al Kharid Scorpions", true, AlKharidScorpions::attack))),
             new AIOAIO_Skill(
                 "Defense",
                 true,
                 Arrays.asList(
                     new AIOAIO_Task("Lummy Cows", true, Cow::defense),
-                    new AIOAIO_Task("Draynor Jailguard", true, JailGuard::defense))),
+                    new AIOAIO_Task("Draynor Jailguard", true, JailGuard::defense),
+                    new AIOAIO_Task("Al Kharid Scorpions", true, AlKharidScorpions::attack))),
             new AIOAIO_Skill(
                 "Strength",
                 true,
                 Arrays.asList(
                     new AIOAIO_Task("Lummy Cows", true, Cow::strength),
-                    new AIOAIO_Task("Draynor Jailguard", true, JailGuard::strength))),
+                    new AIOAIO_Task("Draynor Jailguard", true, JailGuard::strength),
+                    new AIOAIO_Task("Al Kharid Scorpions", true, AlKharidScorpions::attack))),
             new AIOAIO_Skill(
                 "Cooking",
                 true,
