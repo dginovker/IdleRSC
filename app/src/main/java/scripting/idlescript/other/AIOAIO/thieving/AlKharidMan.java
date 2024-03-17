@@ -18,6 +18,7 @@ public class AlKharidMan {
       return Thieving_Utils.getReadyForTheiving();
     }
 
+    c.setStatus("Thieving Al Kharid Men");
     if (Thieving_Utils.inCabbageField() && c.getInventoryItemCount() <= 20)
       Thieving_Utils.pickCabbage();
     else if (Thieving_Utils.goingToCabbages || Combat_Utils.needToEat() && !Combat_Utils.hasFood())
